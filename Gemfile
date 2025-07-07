@@ -1,21 +1,26 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "rails", "~> 8.0.2"
+gem 'rails', '~> 8.0.2'
 
-gem "propshaft"
-gem "pg"
-gem "puma"
-gem "jsbundling-rails"
-gem "turbo-rails"
-gem "stimulus-rails"
-gem "cssbundling-rails"
-gem "jbuilder"
-gem "bootsnap", require: false
+gem 'bootsnap', require: false
+gem 'cssbundling-rails'
+gem 'haml-rails'
+gem 'jbuilder'
+gem 'jsbundling-rails'
+gem 'pg'
+gem 'propshaft'
+gem 'puma'
+gem 'simple_form'
+gem 'stimulus-rails'
+gem 'turbo-rails'
 
 group :development, :test do
-  gem "rubocop-rails-omakase", require: false
+  gem 'haml_lint'
+  gem 'sgcop', github: 'SonicGarden/sgcop', branch: 'main'
 end
 
 group :development do
-  gem "web-console"
+  gem 'bullet'
+  gem 'html2haml'
+  gem 'web-console'
 end
