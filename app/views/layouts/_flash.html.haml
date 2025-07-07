@@ -1,0 +1,3 @@
+.notification
+  - flash.each do |key, value|
+    .alert{ class: "alert-#{bootstrap_alert_class_for(key)}" }= value
