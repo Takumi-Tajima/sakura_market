@@ -86,9 +86,6 @@ GEM
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
     date (3.4.1)
-    debug (1.11.0)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
     drb (2.2.3)
     erb (5.0.1)
     erubi (1.13.1)
@@ -284,17 +281,15 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   cssbundling-rails
-  debug
   jbuilder
   jsbundling-rails
-  pg (~> 1.1)
+  pg
   propshaft
-  puma (>= 5.0)
+  puma
   rails (~> 8.0.2)
   rubocop-rails-omakase
   stimulus-rails
   turbo-rails
-  tzinfo-data
   web-console
 
 BUNDLED WITH
