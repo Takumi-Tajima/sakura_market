@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: sakura_market_development
+
+test:
+  <<: *default
+  database: sakura_market_test
+
+production:
+  <<: *default
+  database: sakura_market_production
+  username: sakura_market
+  password: <%= ENV["SAKURA_MARKET_DATABASE_PASSWORD"] %>
