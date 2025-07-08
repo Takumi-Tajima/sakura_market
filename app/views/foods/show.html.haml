@@ -11,5 +11,5 @@
               %p.card-text= @food.description
               %p.card-text.mb-4
                 %span.display-6.text-primary.fw-bold= number_to_currency(@food.price_with_tax)
-                %small.text-muted.ms-2 （税込）
-              = link_to '一覧に戻る', foods_path, class: 'btn btn-outline-secondary'
+
+  .mt-5= link_to t('general.back'), foods_path
