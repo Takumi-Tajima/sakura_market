@@ -1,0 +1,8 @@
+%h1.fs-2 ユーザーの新規登録
+= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  = f.input :name
+  = f.input :email
+  = f.input :address
+  = f.input :password
+  = f.input :password_confirmation
+  = f.button :submit, class: 'btn-primary'
