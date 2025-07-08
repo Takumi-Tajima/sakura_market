@@ -14,6 +14,7 @@ ja:
         description: 食品説明
         published: 公開状況
         position: 表示順
+        cover_image: 食品の画像
   general:
     login: ログイン
     logout: ログアウト
