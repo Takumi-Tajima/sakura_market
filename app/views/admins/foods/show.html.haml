@@ -11,7 +11,7 @@
         %dd.col-sm-9= @food.description
 
         %dt.col-sm-3= Food.human_attribute_name(:price)
-        %dd.col-sm-9 #{ number_to_currency(@food.price_with_tax) } (税込)
+        %dd.col-sm-9 #{ number_to_currency(@food.price_with_tax) }
 
         %dt.col-sm-3= Food.human_attribute_name(:published)
         %dd.col-sm-9= @food.published ? "#{t('general.public')}" : "#{t('general.private')}"
