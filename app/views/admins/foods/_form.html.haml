@@ -1,6 +1,6 @@
 = simple_form_for([:admins, food]) do |f|
   = f.input :name
-  = f.input :description, input_html: { rows: 3 }
+  = f.input :description
   = f.input :price
   = f.input :cover_image, as: :file, input_html: { accept: 'image/png,image/jpeg,image/jpg' }
   = f.input :published

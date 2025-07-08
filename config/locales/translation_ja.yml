@@ -4,6 +4,12 @@ ja:
       admin: 管理者
       food: 食品
     attributes:
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        address: 住所
+        password_confirmation: パスワード確認
       admin:
         email: メールアドレス
         password: パスワード

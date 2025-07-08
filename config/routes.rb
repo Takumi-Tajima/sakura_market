@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   devise_for :admins, controllers: { sessions: 'admins/sessions' }
 
   root 'foods#index'
@@ -9,4 +10,6 @@ Rails.application.routes.draw do
     root 'foods#index'
     resources :foods
   end
+
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
