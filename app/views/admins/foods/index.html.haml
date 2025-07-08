@@ -3,7 +3,7 @@
 
   .mb-3= link_to '新規登録', new_admins_food_path, class: 'btn btn-primary'
 
-  %table.table.table-striped
+  %table.table
     %thead
       %tr
         %th= Food.human_attribute_name(:position)
@@ -15,5 +15,5 @@
         %tr
           %td= food.position
           %td= link_to food.name, admins_food_path(food)
-          %td= number_to_currency(food.price)
+          %td #{ number_to_currency(food.price_with_tax) } (税込)
           %td= food.published ? "#{t('general.public')}" : "#{t('general.private')}"
