@@ -1,15 +1,15 @@
-.container.py-5
+.py-5
   .row
-    .col-lg-8.mx-auto
-      .card.shadow
-        .row.g-0
+    .col-10.mx-auto
+      .card
+        .row.g-0.p-3
           .col-md-6
             = food_cover_tag(@food, :medium)
           .col-md-6
             .card-body
               %h1.card-title.mb-3= @food.name
-              %p.card-text= @food.description
-              %p.card-text.mb-4
-                %span.display-6.text-primary.fw-bold= number_to_currency(@food.price_with_tax)
+              .card-text= @food.description
+              .card-text.mb-4
+              .fs-3.fw-bold= number_to_currency(@food.price_with_tax)
 
   .mt-5= link_to t('general.back'), foods_path

@@ -1,7 +1,7 @@
 class Food < ApplicationRecord
   has_one_attached :cover_image do |attachable|
-    attachable.variant :thumbnail, resize_to_fit: [350, 350]
-    attachable.variant :medium, resize_to_fit: [400, 300]
+    attachable.variant :thumbnail, resize_to_fit: [400, 300]
+    attachable.variant :medium, resize_to_fit: [800, 600]
   end
 
   acts_as_list
