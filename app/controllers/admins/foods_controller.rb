@@ -45,6 +45,6 @@ class Admins::FoodsController < Admins::ApplicationController
   end
 
   def food_params
-    params.expect(food: %i[name description price published cover_image])
+    params.expect(food: %i[name description price published cover_image position])
   end
 end
