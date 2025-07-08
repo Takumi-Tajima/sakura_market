@@ -2,14 +2,31 @@ ja:
   activerecord:
     models:
       admin: 管理者
+      food: 食品
     attributes:
       admin:
         email: メールアドレス
         password: パスワード
         remember_me: ログインを記憶する
+      food:
+        name: 食品名
+        price: 価格
+        description: 食品説明
+        published: 公開状況
+        position: 表示順
   general:
     login: ログイン
     logout: ログアウト
+    public: 公開
+    private: 非公開
+    back: 戻る
+    edit: 編集
+    create: 新規登録
+    destroy: 削除
   views:
-    confirm:
+    confirm: 削除します。よろしいですか？
     log_out_confirm: ログアウトします。よろしいですか？
+  controllers:
+    created: 作成しました。
+    updated: 更新しました。
+    destroyed: 削除しました。

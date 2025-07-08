@@ -1,0 +1,7 @@
+.mt-4
+  %h1.fs-2.mb-3 食品編集
+
+  = render 'form', food: @food
+
+  .mt-5
+    = link_to t('general.back'), admins_food_path(@food)
