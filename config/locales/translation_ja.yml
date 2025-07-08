@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    models:
+      admin: 管理者
+    attributes:
+      admin:
+        email: メールアドレス
+        password: パスワード
+        remember_me: ログインを記憶する
+  general:
+    login: ログイン
+    logout: ログアウト
+  views:
+    confirm:
+    log_out_confirm: ログアウトします。よろしいですか？
