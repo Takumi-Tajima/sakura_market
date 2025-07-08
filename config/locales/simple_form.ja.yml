@@ -10,5 +10,7 @@ ja:
       default_message: "エラーがあります。確認してください。"
   helpers:
     submit:
+      create: "登録"
+      update: "更新"
       admin:
         create: "ログイン"
