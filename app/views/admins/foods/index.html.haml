@@ -1,0 +1,19 @@
+.mt-4
+  %h1.fs-2.mb-3 食品一覧
+
+  .mb-3= link_to '新規登録', new_admins_food_path, class: 'btn btn-primary'
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th= Food.human_attribute_name(:position)
+        %th= Food.human_attribute_name(:name)
+        %th= Food.human_attribute_name(:price)
+        %th= Food.human_attribute_name(:published)
+    %tbody
+      - @foods.each do |food|
+        %tr
+          %td= food.position
+          %td= link_to food.name, admins_food_path(food)
+          %td= number_to_currency(food.price)
+          %td= food.published ? "#{t('general.public')}" : "#{t('general.private')}"

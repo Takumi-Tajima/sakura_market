@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :admins do
-    root 'home#index'
+    root 'foods#index'
+    resources :foods
   end
 end
