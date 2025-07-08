@@ -2,5 +2,6 @@
   = f.input :name
   = f.input :description, input_html: { rows: 3 }
   = f.input :price
+  = f.input :cover_image, as: :file, input_html: { accept: 'image/png,image/jpeg,image/jpg' }
   = f.input :published
   = f.button :submit, class: 'btn-primary'
