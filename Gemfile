@@ -7,6 +7,7 @@ gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'devise'
 gem 'haml-rails'
+gem 'image_processing'
 gem 'jsbundling-rails'
 gem 'pg'
 gem 'propshaft'

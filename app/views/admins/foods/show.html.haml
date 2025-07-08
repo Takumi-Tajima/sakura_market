@@ -3,20 +3,25 @@
 
   .card
     .card-body
-      %dl.row
-        %dt.col-sm-3= Food.human_attribute_name(:name)
-        %dd.col-sm-9= @food.name
+      .row
+        .col-md-6
+          = food_cover_tag(@food, :medium)
+        .col-md-6
+          %dl.row
+            %dt.col-sm-4= Food.human_attribute_name(:name)
+            %dd.col-sm-8= @food.name
 
-        %dt.col-sm-3= Food.human_attribute_name(:description)
-        %dd.col-sm-9= @food.description
+            %dt.col-sm-4= Food.human_attribute_name(:description)
+            %dd.col-sm-8= @food.description
 
-        %dt.col-sm-3= Food.human_attribute_name(:price)
-        %dd.col-sm-9 #{ number_to_currency(@food.price_with_tax) }
+            %dt.col-sm-4= Food.human_attribute_name(:price)
+            %dd.col-sm-8 #{ number_to_currency(@food.price_with_tax) }
 
-        %dt.col-sm-3= Food.human_attribute_name(:published)
-        %dd.col-sm-9= @food.published ? "#{t('general.public')}" : "#{t('general.private')}"
+            %dt.col-sm-4= Food.human_attribute_name(:published)
+            %dd.col-sm-8= @food.published ? "#{t('general.public')}" : "#{t('general.private')}"
 
   .mt-3.d-flex.justify-content-between
     = link_to t('general.edit'), edit_admins_food_path(@food), class: 'btn btn-primary'
     = button_to t('general.destroy'), admins_food_path(@food), method: :delete, data: { turbo_confirm: t('views.confirm') }, class: 'btn btn-outline-danger'
-  .mt-5= link_to t('general.back'), admins_foods_path
+  .mt-5
+    = link_to t('general.back'), admins_foods_path
