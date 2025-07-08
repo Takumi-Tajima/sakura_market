@@ -13,6 +13,7 @@ class Food < ApplicationRecord
   validates :cover_image, content_type: %i[png jpg jpeg], size: { less_than: 5.megabytes }
 
   scope :default_order, -> { order(:position) }
+  scope :published, -> { where(published: true) }
 
   def price_with_tax
     BigDecimal(price) * BigDecimal(TaxRate.default.to_s)
