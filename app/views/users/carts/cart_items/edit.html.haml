@@ -1,0 +1,18 @@
+.py-5
+  .row
+    .col-6.mx-auto
+      .card.p-4
+        .row.mb-4
+          .col-4
+            = food_cover_tag(@cart_item.food, :medium)
+          .col-8
+            .fs-5= @cart_item.food.name
+            %p= @cart_item.food.description
+            %p.fw-bold= number_to_currency(@cart_item.food.price_with_tax)
+
+        = simple_form_for @cart_item, url: users_cart_cart_item_path(@cart_item), method: :patch do |f|
+          = f.input :food_id, as: :hidden
+          = f.input :quantity
+          = f.button :submit, class: 'btn-primary'
+
+      .mt-5= link_to t('general.back'), users_cart_path

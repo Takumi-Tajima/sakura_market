@@ -8,6 +8,8 @@ class Food < ApplicationRecord
     attachable.variant :medium, resize_to_fit: IMAGE_MEDIUM_SIZE
   end
 
+  has_many :cart_items, dependent: :destroy
+
   acts_as_list
 
   validates :name, presence: true

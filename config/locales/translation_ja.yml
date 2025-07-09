@@ -21,6 +21,8 @@ ja:
         published: 公開状況
         position: 表示順
         cover_image: 食品の画像
+      cart_item:
+        quantity: 個数
   general:
     login: ログイン
     logout: ログアウト
@@ -37,3 +39,11 @@ ja:
     created: 作成しました。
     updated: 更新しました。
     destroyed: 削除しました。
+    cart_items:
+      added: カートに追加しました。
+  cart:
+    add: カートに追加する
+    total: 合計
+    empty: カートに商品がありません。
+  cart_item:
+    subtotal: 小計

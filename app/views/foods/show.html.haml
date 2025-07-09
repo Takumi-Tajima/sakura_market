@@ -1,4 +1,4 @@
-.py-5
+.mt-3
   .row
     .col-10.mx-auto
       .card
@@ -10,6 +10,8 @@
               %h1.card-title.mb-3= @food.name
               .card-text= @food.description
               .card-text.mb-4
-              .fs-3.fw-bold= number_to_currency(@food.price_with_tax)
+              .fs-3.fw-bold.mb-4= number_to_currency(@food.price_with_tax)
+              - if user_signed_in?
+                = link_to t('cart.add'), new_users_cart_cart_item_path(food_id: @food), class: 'btn btn-primary'
 
   .mt-5= link_to t('general.back'), foods_path
