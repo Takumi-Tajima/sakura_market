@@ -4,4 +4,6 @@ class CartItem < ApplicationRecord
 
   validates :food_id, uniqueness: { scope: :cart_id }
   validates :quantity, numericality: { greater_than: 0 }
+
+  scope :default_order, -> { order(id: :desc) }
 end

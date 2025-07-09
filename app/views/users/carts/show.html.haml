@@ -1,0 +1,37 @@
+.mt-3
+  .row
+    .col-8.mx-auto
+      %h1.fs-2.mb-4 カート
+
+      - if @cart_items.any?
+        .card
+          .card-body
+            - @cart_items.each do |item|
+              .row.py-3.border-bottom
+                .col-2
+                  = food_cover_tag(item.food, :medium)
+                .col-4
+                  %h5= item.food.name
+                  %p.text-muted= item.food.description
+                .col-2
+                  %p.mb-0= CartItem.human_attribute_name(:quantity)
+                  %p.fw-bold= item.quantity
+                .col-2
+                  %p.mb-0= Food.human_attribute_name(:price)
+                  %p.fw-bold= number_to_currency(item.food.price_with_tax)
+                .col-2
+                  .d-flex.flex-column.gap-2
+                    = link_to t('general.edit'), edit_users_cart_cart_item_path(item), class: 'btn btn-sm btn-outline-primary'
+                    = button_to t('general.destroy'), users_cart_cart_item_path(item), method: :delete, data: { turbo_confirm: t('views.confirm') }, class: 'btn btn-sm btn-outline-danger'
+
+            .row.mt-4
+              .col-12.text-end
+                %h4
+                  = t('cart.total')
+                  %span.fw-bold= number_to_currency(@cart_items.sum { |item| item.food.price_with_tax * item.quantity })
+      - else
+        .alert.alert-info
+          = t('cart.empty')
+
+      .mt-4
+        = link_to t('general.back'), foods_path, class: 'btn btn-secondary'

@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   namespace :users do
     resource :cart, only: %i[show] do
-      resources :cart_items, only: %i[new create edit update destroy]
+      resources :cart_items, only: %i[new create edit update destroy], module: :carts
     end
   end
 
