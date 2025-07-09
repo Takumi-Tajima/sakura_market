@@ -6,4 +6,8 @@ class CartItem < ApplicationRecord
   validates :quantity, numericality: { greater_than: 0 }
 
   scope :default_order, -> { order(id: :desc) }
+
+  def total_price
+    quantity * food.price_with_tax
+  end
 end

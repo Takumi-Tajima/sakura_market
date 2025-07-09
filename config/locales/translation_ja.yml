@@ -45,3 +45,5 @@ ja:
     add: カートに追加する
     total: 合計
     empty: カートに商品がありません。
+  cart_item:
+    subtotal: 小計

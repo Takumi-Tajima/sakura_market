@@ -1,6 +1,8 @@
 class Users::ApplicationController < ApplicationController
   before_action :authenticate_user!
 
+  helper_method :current_cart
+
   private
 
   def current_cart
