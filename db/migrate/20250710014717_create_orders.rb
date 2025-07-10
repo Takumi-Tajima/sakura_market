@@ -3,7 +3,7 @@ class CreateOrders < ActiveRecord::Migration[8.0]
     create_table :orders do |t|
       t.references :user, null: false, foreign_key: true
       t.integer :total_amount, null: false
-      t.integer :subtotal, null: false
+      t.integer :item_total_amount, null: false
       t.integer :shipping_fee, null: false
       t.integer :cash_on_delivery_fee, null: false
       t.integer :tax_amount, null: false

@@ -100,7 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_014737) do
   create_table "orders", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "total_amount", null: false
-    t.integer "subtotal", null: false
+    t.integer "item_total_amount", null: false
     t.integer "shipping_fee", null: false
     t.integer "cash_on_delivery_fee", null: false
     t.integer "tax_amount", null: false
