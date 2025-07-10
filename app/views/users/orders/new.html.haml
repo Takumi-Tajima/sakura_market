@@ -1,0 +1,64 @@
+.mt-3
+  .row
+    .col-8.mx-auto
+      %h1.fs-2.mb-4 注文確認
+
+      .card.mb-4
+        .card-header
+          %h5.mb-0 注文商品
+        .card-body
+          - @cart_items.each do |item|
+            .row.py-3.border-bottom
+              .col-3
+                %h5= item.food.name
+                %p.text-muted= item.food.description
+              .col-1
+                %p.mb-0= CartItem.human_attribute_name(:quantity)
+                %p.fw-bold= item.quantity
+              .col-2
+                %p.mb-0= Food.human_attribute_name(:price)
+                %p.fw-bold= number_to_currency(item.food.price_with_tax)
+              .col-2
+                %p.mb-0 小計
+                %p.fw-bold= number_to_currency(item.total_price_with_tax)
+
+
+      .card.mb-4
+        .card-header
+          %h5.mb-0 配送先情報
+        .card-body
+          .row.mb-2
+            .col-3
+              %p.mb-0 お名前
+            .col-9
+              %p.fw-bold= current_user.name
+          .row
+            .col-3
+              %p.mb-0 住所
+            .col-9
+              %p.fw-bold= current_user.address
+
+      .card.mb-4
+        .card-header
+          %h5.mb-0 料金内訳
+        .card-body
+          .row.py-2
+            .col-8
+              %span 商品代金（税抜）
+            .col-4.text-end
+              %span= number_to_currency(current_cart.total_price)
+          .row.py-2
+            .col-8
+              %span 商品税額（8%）
+            .col-4.text-end
+              %span= number_to_currency(current_cart.total_tax_amount)
+          .row.py-2.border-top.pt-3
+            .col-8
+              %h5.mb-0 お支払い金額
+            .col-4.text-end
+              %h5.fw-bold.text-primary= number_to_currency(current_cart.total_price_with_tax)
+
+      .text-center.mt-4
+        = simple_form_for([:users, @order]) do |f|
+          = f.submit '注文を確定する', class: 'btn btn-primary btn-lg px-5'
+          = link_to 'カートに戻る', users_cart_path, class: 'btn btn-outline-secondary ms-3'
