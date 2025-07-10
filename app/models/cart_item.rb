@@ -9,6 +9,10 @@ class CartItem < ApplicationRecord
   scope :default_order, -> { order(id: :desc) }
 
   def total_price
+    quantity * food.price
+  end
+
+  def total_price_with_tax
     quantity * food.price_with_tax
   end
 
