@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resource :cart, only: %i[show] do
       resources :cart_items, only: %i[new create edit update destroy], module: :carts
     end
+    resources :orders, only: %i[new create]
   end
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
