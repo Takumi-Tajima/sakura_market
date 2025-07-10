@@ -21,7 +21,7 @@
                   %p.fw-bold= number_to_currency(item.food.price_with_tax)
                 .col-2
                   %p.mb-0= t('cart_item.subtotal')
-                  %p.fw-bold= number_to_currency(item.total_price)
+                  %p.fw-bold= number_to_currency(item.total_price_with_tax)
                 .col-2
                   .d-flex.flex-column.gap-2
                     = link_to t('general.edit'), edit_users_cart_cart_item_path(item), class: 'btn btn-sm btn-outline-primary'
@@ -31,7 +31,11 @@
               .col-12.text-end
                 %h4
                   = t('cart.total')
-                  %span.fw-bold= number_to_currency(current_cart.total_price)
+                  %span.fw-bold= number_to_currency(current_cart.total_price_with_tax)
+
+            .row.mt-4
+              .col-12.text-end
+                = link_to t('order.confirm'), new_users_order_path, class: 'btn btn-primary btn-lg'
       - else
         .alert.alert-info
           = t('cart.empty')
