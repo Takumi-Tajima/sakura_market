@@ -23,6 +23,17 @@ ja:
         cover_image: 食品の画像
       cart_item:
         quantity: 個数
+      order:
+        total_amount: 合計金額
+        item_total_amount: 商品合計
+        shipping_fee: 配送料
+        cash_on_delivery_fee: 代金引換手数料
+        tax_amount: 税額
+        delivery_on: 配送日
+        delivery_time_slot: 配送時間帯
+        delivery_name: 配送先名
+        delivery_address: 配送先住所
+        ordered_at: 注文日時
   general:
     login: ログイン
     logout: ログアウト
@@ -47,3 +58,5 @@ ja:
     empty: カートに商品がありません。
   cart_item:
     subtotal: 小計
+  order:
+    confirm: 注文を確認する
