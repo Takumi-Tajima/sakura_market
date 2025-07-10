@@ -105,9 +105,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_014737) do
     t.integer "shipping_fee", null: false
     t.integer "cash_on_delivery_fee", null: false
     t.string "delivery_time_slot", null: false
+    t.date "delivery_on", null: false
     t.string "delivery_name", null: false
     t.text "delivery_address", null: false
-    t.date "delivery_on", null: false
     t.datetime "ordered_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
