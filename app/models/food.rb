@@ -23,6 +23,6 @@ class Food < ApplicationRecord
   scope :published, -> { where(published: true) }
 
   def price_with_tax
-    BigDecimal(price) * BigDecimal(TaxRate.default.to_s)
+    BigDecimal(price) * BigDecimal(TaxRate.reduced.to_s)
   end
 end
