@@ -59,6 +59,12 @@ class Order < ApplicationRecord
     end.select(&:on_weekday?)
   end
 
+  # TODO: 小数点計算なのでロジックを調査する
+  def calculate_shipping_fee(cart)
+    total_quantity = cart.cart_items.sum(:quantity)
+    (total_quantity / 5.0).ceil * SHIPPING_FEE_PER_UNIT
+  end
+
   private
 
   def build_order_items_from_cart(cart)
@@ -78,12 +84,6 @@ class Order < ApplicationRecord
 
     calculate_tax_and_total_amounts(cart)
     assign_delivery_attributes
-  end
-
-  # TODO: 小数点計算なのでロジックを調査する
-  def calculate_shipping_fee(cart)
-    total_quantity = cart.cart_items.sum(:quantity)
-    (total_quantity / 5.0).ceil * SHIPPING_FEE_PER_UNIT
   end
 
   def calculate_tax_and_total_amounts(cart)
