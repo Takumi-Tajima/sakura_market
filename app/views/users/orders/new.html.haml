@@ -34,38 +34,50 @@
               %p.mb-0 お名前
             .col-9
               %p.fw-bold= current_user.name
-          .row
+          .row.mb-3
             .col-3
               %p.mb-0 住所
             .col-9
               %p.fw-bold= current_user.address
 
-      .card.mb-4
-        .card-header
-          %h5.mb-0 料金内訳
-        .card-body
-          .row.py-2
-            .col-8
-              %span 代引き手数料
-            .col-4.text-end
-              %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax))
-          .row.py-2
-            .col-8
-              %span 商品代金（税抜）
-            .col-4.text-end
-              %span= number_to_currency(current_cart.total_price)
-          .row.py-2
-            .col-8
-              %span 商品税額（8%）
-            .col-4.text-end
-              %span= number_to_currency(current_cart.total_tax_amount)
-          .row.py-2.border-top.pt-3
-            .col-8
-              %h5.mb-0 お支払い金額
-            .col-4.text-end
-              %h5.fw-bold.text-primary= number_to_currency(current_cart.total_price_with_tax)
+      = simple_form_for([:users, @order]) do |f|
+        .card.mb-4
+          .card-header
+            %h5.mb-0 配送日指定
+          .card-body
+            %p.text-muted.mb-3 ご注文日から3日後〜14日後の平日でご指定いただけます
+            = f.input :delivery_on,
+              as: :select,
+              collection: Order.available_delivery_dates.map { l(it) },
+              label: false,
+              prompt: '配送日を選択してください',
+              input_html: { class: 'form-select' }
 
-      .text-center.mt-4
-        = simple_form_for([:users, @order]) do |f|
+        .card.mb-4
+          .card-header
+            %h5.mb-0 料金内訳
+          .card-body
+            .row.py-2
+              .col-8
+                %span 代引き手数料
+              .col-4.text-end
+                %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax))
+            .row.py-2
+              .col-8
+                %span 商品代金（税抜）
+              .col-4.text-end
+                %span= number_to_currency(current_cart.total_price)
+            .row.py-2
+              .col-8
+                %span 商品税額（8%）
+              .col-4.text-end
+                %span= number_to_currency(current_cart.total_tax_amount)
+            .row.py-2.border-top.pt-3
+              .col-8
+                %h5.mb-0 お支払い金額
+              .col-4.text-end
+                %h5.fw-bold.text-primary= number_to_currency(current_cart.total_price_with_tax)
+
+        .text-center.mt-4
           = f.submit '注文を確定する', class: 'btn btn-primary btn-lg px-5'
           = link_to 'カートに戻る', users_cart_path, class: 'btn btn-outline-secondary ms-3'

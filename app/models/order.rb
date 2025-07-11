@@ -1,4 +1,7 @@
 class Order < ApplicationRecord
+  MINIMUM_DELIVERY_DAYS = 3
+  MAXIMUM_DELIVERY_DAYS = 14
+
   belongs_to :user
   has_many :order_items, dependent: :destroy
 
@@ -14,6 +17,7 @@ class Order < ApplicationRecord
   validates :delivery_address, presence: true
   validates :ordered_at, presence: true
   validate :validate_user_have_address
+  validate :validate_delivery_on_is_available
 
   def save_with_cart_items(cart)
     return false if cart.cart_items.empty?
@@ -42,6 +46,12 @@ class Order < ApplicationRecord
     else
       1_000
     end
+  end
+
+  def self.available_delivery_dates
+    (MINIMUM_DELIVERY_DAYS..MAXIMUM_DELIVERY_DAYS).map do |days|
+      Date.current + days
+    end.select(&:on_weekday?)
   end
 
   private
@@ -80,7 +90,7 @@ class Order < ApplicationRecord
 
   def assign_delivery_attributes
     self.ordered_at = Time.current
-    self.delivery_on = Date.current
+    self.delivery_on ||= Date.current + MINIMUM_DELIVERY_DAYS
     self.delivery_time_slot = '未定'
     self.delivery_name = user.name
     self.delivery_address = user.address
@@ -89,6 +99,14 @@ class Order < ApplicationRecord
   def validate_user_have_address
     if user.address.blank?
       errors.add(:base, :validate_user_have_address)
+    end
+  end
+
+  def validate_delivery_on_is_available
+    available_dates = Order.available_delivery_dates
+
+    unless available_dates.include?(delivery_on)
+      errors.add(:delivery_on, '選択可能な配送日を指定してください')
     end
   end
 end

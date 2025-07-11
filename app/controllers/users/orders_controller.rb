@@ -7,7 +7,7 @@ class Users::OrdersController < Users::ApplicationController
   end
 
   def create
-    @order = current_user.orders.build
+    @order = current_user.orders.build(order_params)
 
     if @order.save_with_cart_items(current_cart)
       redirect_to foods_path, notice: '注文しました'
@@ -18,9 +18,9 @@ class Users::OrdersController < Users::ApplicationController
 
   private
 
-  # def order_params
-  #   {}
-  # end
+  def order_params
+    params.expect(order: %i[delivery_on])
+  end
 
   def require_cart_items
     if current_cart.cart_items.empty?
