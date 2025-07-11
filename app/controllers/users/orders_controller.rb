@@ -19,7 +19,7 @@ class Users::OrdersController < Users::ApplicationController
   private
 
   def order_params
-    params.expect(order: %i[delivery_on])
+    params.expect(order: %i[delivery_on delivery_time_slot])
   end
 
   def require_cart_items

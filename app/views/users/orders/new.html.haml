@@ -43,15 +43,24 @@
       = simple_form_for([:users, @order]) do |f|
         .card.mb-4
           .card-header
-            %h5.mb-0 配送日指定
+            %h5.mb-0 配送日・時間帯指定
           .card-body
             %p.text-muted.mb-3 ご注文日から3日後〜14日後の平日でご指定いただけます
-            = f.input :delivery_on,
-              as: :select,
-              collection: Order.available_delivery_dates.map { l(it) },
-              label: false,
-              prompt: '配送日を選択してください',
-              input_html: { class: 'form-select' }
+            .row
+              .col-md-6.mb-3
+                = f.input :delivery_on,
+                  as: :select,
+                  collection: Order.available_delivery_dates.map { l(it) },
+                  label: '配送日',
+                  prompt: '配送日を選択してください',
+                  input_html: { class: 'form-select' }
+              .col-md-6.mb-3
+                = f.input :delivery_time_slot,
+                  as: :select,
+                  collection: Order::DELIVERY_TIME_ZONES_AVAILABLE.map { |slot| [slot, slot] },
+                  label: '配送時間帯',
+                  prompt: '時間帯を選択してください',
+                  input_html: { class: 'form-select' }
 
         .card.mb-4
           .card-header

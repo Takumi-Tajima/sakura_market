@@ -1,6 +1,11 @@
 class Order < ApplicationRecord
+  extend Enumerize
+
   MINIMUM_DELIVERY_DAYS = 3
   MAXIMUM_DELIVERY_DAYS = 14
+  DELIVERY_TIME_ZONES_AVAILABLE = %w[08-12 12-14 14-16 16-18 18-20 20-21].freeze
+
+  enumerize :delivery_time_slot, in: DELIVERY_TIME_ZONES_AVAILABLE
 
   belongs_to :user
   has_many :order_items, dependent: :destroy
@@ -11,7 +16,7 @@ class Order < ApplicationRecord
   validates :tax_amount, numericality: { greater_than: 0 }
   validates :shipping_fee, numericality: { greater_than: 0 }
   validates :cash_on_delivery_fee, numericality: { greater_than: 0 }
-  validates :delivery_time_slot, presence: true
+  validates :delivery_time_slot, presence: true, inclusion: { in: DELIVERY_TIME_ZONES_AVAILABLE }
   validates :delivery_on, presence: true
   validates :delivery_name, presence: true
   validates :delivery_address, presence: true
@@ -21,7 +26,6 @@ class Order < ApplicationRecord
 
   def save_with_cart_items(cart)
     return false if cart.cart_items.empty?
-    return false if invalid?
 
     transaction do
       build_order_items_from_cart(cart)
@@ -91,15 +95,9 @@ class Order < ApplicationRecord
   def assign_delivery_attributes
     self.ordered_at = Time.current
     self.delivery_on ||= Date.current + MINIMUM_DELIVERY_DAYS
-    self.delivery_time_slot = '未定'
+    self.delivery_time_slot ||= DELIVERY_TIME_ZONES_AVAILABLE.first
     self.delivery_name = user.name
     self.delivery_address = user.address
-  end
-
-  def validate_user_have_address
-    if user.address.blank?
-      errors.add(:base, :validate_user_have_address)
-    end
   end
 
   def validate_delivery_on_is_available
