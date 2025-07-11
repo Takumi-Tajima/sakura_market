@@ -24,8 +24,10 @@
 
 
       .card.mb-4
-        .card-header
+        .card-header.d-flex.justify-content-between
           %h5.mb-0 配送先情報
+          -# ユーザー情報の変更リンク
+          = link_to '登録住所の変更', root_path
         .card-body
           .row.mb-2
             .col-3
@@ -42,6 +44,11 @@
         .card-header
           %h5.mb-0 料金内訳
         .card-body
+          .row.py-2
+            .col-8
+              %span 代引き手数料
+            .col-4.text-end
+              %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax))
           .row.py-2
             .col-8
               %span 商品代金（税抜）
