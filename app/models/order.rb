@@ -4,6 +4,7 @@ class Order < ApplicationRecord
   MINIMUM_DELIVERY_DAYS = 3
   MAXIMUM_DELIVERY_DAYS = 14
   DELIVERY_TIME_ZONES_AVAILABLE = %w[08-12 12-14 14-16 16-18 18-20 20-21].freeze
+  SHIPPING_FEE_PER_UNIT = 600
 
   enumerize :delivery_time_slot, in: DELIVERY_TIME_ZONES_AVAILABLE
 
@@ -72,11 +73,17 @@ class Order < ApplicationRecord
 
   def assign_attributes_from_cart(cart)
     self.item_total_amount = cart.total_price_with_tax
-    self.shipping_fee = 1 # TODO: 送料計算実装予定
+    self.shipping_fee = calculate_shipping_fee(cart)
     self.cash_on_delivery_fee = calculate_cash_on_delivery_fee(cart.total_price_with_tax)
 
     calculate_tax_and_total_amounts(cart)
     assign_delivery_attributes
+  end
+
+  # TODO: 小数点計算なのでロジックを調査する
+  def calculate_shipping_fee(cart)
+    total_quantity = cart.cart_items.sum(:quantity)
+    (total_quantity / 5.0).ceil * SHIPPING_FEE_PER_UNIT
   end
 
   def calculate_tax_and_total_amounts(cart)

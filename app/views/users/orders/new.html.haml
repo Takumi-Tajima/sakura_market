@@ -68,24 +68,35 @@
           .card-body
             .row.py-2
               .col-8
-                %span 代引き手数料
-              .col-4.text-end
-                %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax))
-            .row.py-2
-              .col-8
                 %span 商品代金（税抜）
               .col-4.text-end
                 %span= number_to_currency(current_cart.total_price)
             .row.py-2
               .col-8
+                %span 送料（税抜）
+              .col-4.text-end
+                %span= number_to_currency(@order.calculate_shipping_fee(current_cart))
+            .row.py-2
+              .col-8
+                %span 代引き手数料（税抜）
+              .col-4.text-end
+                %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax))
+            .row.py-2
+              .col-8
                 %span 商品税額（8%）
               .col-4.text-end
                 %span= number_to_currency(current_cart.total_tax_amount)
+            .row.py-2
+              .col-8
+                %span 送料・代引き手数料税額（10%）
+              .col-4.text-end
+                %span= number_to_currency((@order.calculate_shipping_fee(current_cart) + @order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax)) * 0.1)
             .row.py-2.border-top.pt-3
               .col-8
                 %h5.mb-0 お支払い金額
               .col-4.text-end
-                %h5.fw-bold.text-primary= number_to_currency(current_cart.total_price_with_tax)
+                - total_amount = current_cart.total_price_with_tax + @order.calculate_shipping_fee(current_cart) + @order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax) + ((@order.calculate_shipping_fee(current_cart) + @order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax)) * 0.1).floor
+                %h5.fw-bold.text-primary= number_to_currency(total_amount)
 
         .text-center.mt-4
           = f.submit '注文を確定する', class: 'btn btn-primary btn-lg px-5'
