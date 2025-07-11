@@ -21,6 +21,7 @@ ja:
         published: 公開状況
         position: 表示順
         cover_image: 食品の画像
+        order_items: 注文商品
       cart_item:
         quantity: 個数
       order:
