@@ -13,6 +13,7 @@ class Order < ApplicationRecord
   validates :delivery_name, presence: true
   validates :delivery_address, presence: true
   validates :ordered_at, presence: true
+  validate :validate_user_have_address
 
   def save_with_cart_items(cart)
     return false if cart.cart_items.empty?
@@ -47,6 +48,9 @@ class Order < ApplicationRecord
         quantity: cart_item.quantity,
         price: cart_item.food.price_with_tax
       )
+  def validate_user_have_address
+    if user.address.blank?
+      errors.add(:base, :validate_user_have_address)
     end
   end
 end
