@@ -21,10 +21,13 @@ class Order < ApplicationRecord
       self.total_amount = cart.total_price
       self.item_total_amount = cart.total_price_with_tax
       self.tax_amount = cart.total_tax_amount
-      self.shipping_fee = 0
-      self.cash_on_delivery_fee = 0
+      self.shipping_fee = 1
+      self.cash_on_delivery_fee = 1
       self.ordered_at = Time.current
-      set_delivery_info
+      self.delivery_on = Date.current
+      self.delivery_time_slot = '未定'
+      self.delivery_name = user.name
+      self.delivery_address = user.address
       save!
       create_order_items(cart)
       cart.cart_items.destroy_all
@@ -36,13 +39,6 @@ class Order < ApplicationRecord
   end
 
   private
-
-  def set_delivery_info
-    self.delivery_on = Date.current
-    self.delivery_time_slot = '未定'
-    self.delivery_name = user.name
-    self.delivery_address = user.address
-  end
 
   def create_order_items(cart)
     cart.cart_items.each do |cart_item|
