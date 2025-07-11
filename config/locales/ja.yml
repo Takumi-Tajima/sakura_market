@@ -111,6 +111,7 @@ ja:
       too_short: は%{count}文字以上で入力してください
       wrong_length: は%{count}文字で入力してください
       validate_food_is_published: 公開されている食品のみを追加することができます
+      validate_user_have_address: 注文には住所を登録する必要があります
     template:
       body: 次の項目を確認してください
       header: "%{model}に%{count}個のエラーが発生しました"
