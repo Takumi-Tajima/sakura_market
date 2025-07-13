@@ -22,21 +22,19 @@ class Order < ApplicationRecord
   validates :delivery_name, presence: true
   validates :delivery_address, presence: true
   validates :ordered_at, presence: true
-  validate :validate_user_have_address
   validate :validate_delivery_on_is_available
 
   def save_with_cart_items(cart)
-    return false if cart.cart_items.empty?
-
     transaction do
-      build_order_items_from_cart(cart)
-      assign_attributes_from_cart(cart)
+      import_cart_items(cart)
+      setup_order_details(cart)
       save!
       cart.destroy!
     end
     true
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error "Order save failed: #{e.message}"
+    errors.add(:base, '注文の作成に失敗しました') if errors.empty?
     false
   end
 
@@ -67,44 +65,59 @@ class Order < ApplicationRecord
 
   private
 
-  def build_order_items_from_cart(cart)
-    cart.cart_items.each do |cart_item|
+  def import_cart_items(cart)
+    cart.cart_items.find_each do |cart_item|
       order_items.build(
         food: cart_item.food,
         quantity: cart_item.quantity,
-        price: cart_item.food.price_with_tax
+        price: cart_item.food.price_with_tax # 注文時点の価格を固定
       )
     end
   end
 
-  def assign_attributes_from_cart(cart)
+  def setup_order_details(cart)
+    # 商品関連の金額設定
     self.item_total_amount = cart.total_price_with_tax
+
+    # 追加料金の計算
     self.shipping_fee = calculate_shipping_fee(cart)
-    self.cash_on_delivery_fee = calculate_cash_on_delivery_fee(cart.total_price_with_tax)
+    self.cash_on_delivery_fee = calculate_cash_on_delivery_fee(item_total_amount)
 
-    calculate_tax_and_total_amounts(cart)
-    assign_delivery_attributes
+    # 税金と合計の計算
+    setup_tax_and_total_amounts
+
+    # 配送情報の設定
+    setup_delivery_info
   end
 
-  def calculate_tax_and_total_amounts(cart)
-    # 税額計算: 商品税額 + (送料 + 代引き手数料) * 10%
-    shipping_and_delivery_tax = calculate_shipping_and_delivery_tax
-    self.tax_amount = cart.total_tax_amount + shipping_and_delivery_tax
+  def setup_tax_and_total_amounts
+    # 送料と代引き手数料の税額
+    fees_tax = calculate_fees_tax
 
-    # 総合計額 = 商品合計(税込) + 送料(税抜) + 代引き手数料(税抜) + (送料+代引き手数料)の税額
-    self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + shipping_and_delivery_tax
+    # 総税額 = 商品税額 + 手数料税額
+    self.tax_amount = calculate_items_tax + fees_tax
+
+    # 総合計 = 商品合計 + 送料 + 代引き手数料 + 手数料税額
+    self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + fees_tax
   end
 
-  def calculate_shipping_and_delivery_tax
+  def calculate_fees_tax
     ((shipping_fee + cash_on_delivery_fee) * 0.1).floor
   end
 
-  def assign_delivery_attributes
+  def calculate_items_tax
+    order_items.sum { |item| (item.price * item.quantity * 0.1).floor }
+  end
+
+  def setup_delivery_info
     self.ordered_at = Time.current
-    self.delivery_on ||= Date.current + MINIMUM_DELIVERY_DAYS
-    self.delivery_time_slot ||= DELIVERY_TIME_ZONES_AVAILABLE.first
     self.delivery_name = user.name
     self.delivery_address = user.address
+  end
+
+  def add_error_and_return_false(attribute, message)
+    errors.add(attribute, message)
+    false
   end
 
   def validate_delivery_on_is_available
