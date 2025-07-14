@@ -10,18 +10,13 @@ class Users::OrdersController < Users::ApplicationController
     @order = current_user.orders.build(order_params)
 
     if @order.save_with_order_items_and_delete_cart(current_cart)
-      # TODO: i18nにする
-      redirect_to foods_path, notice: '注文しました'
+      redirect_to foods_path, notice: t('controllers.orders.created')
     else
       render :new, status: :unprocessable_content
     end
   end
 
   private
-
-  def order_params
-    params.expect(order: %i[delivery_on delivery_time_slot])
-  end
 
   def require_cart_items
     if current_cart.cart_items.empty?
@@ -31,5 +26,9 @@ class Users::OrdersController < Users::ApplicationController
 
   def set_cart_items
     @cart_items = current_cart.cart_items.includes(:food).default_order
+  end
+
+  def order_params
+    params.expect(order: %i[delivery_on delivery_time_slot])
   end
 end
