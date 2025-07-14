@@ -43,7 +43,7 @@ class Order < ApplicationRecord
       self.shipping_fee = calculate_shipping_fee(cart)
       self.cash_on_delivery_fee = calculate_cash_on_delivery_fee(item_total_amount)
       self.tax_amount = cart.total_tax_amount + calculate_service_fees_tax_amount
-      self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + tax_amount
+      self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + calculate_service_fees_tax_amount
 
       if save
         begin
@@ -85,11 +85,15 @@ class Order < ApplicationRecord
   end
 
   def item_total_without_tax
-    (item_total_amount / 1.08).floor
+    order_items.sum { |item| item.food.price * item.quantity }
   end
 
   def item_tax_amount
-    item_total_amount - item_total_without_tax
+    order_items.sum { |item|
+      tax_excluded_total = item.food.price * item.quantity
+      tax_included_total = item.price * item.quantity
+      tax_included_total - tax_excluded_total
+    }
   end
 
   def service_fees_tax_display_amount
@@ -97,7 +101,7 @@ class Order < ApplicationRecord
   end
 
   def preview_service_fees_tax_amount(cart)
-    (calculate_shipping_fee(cart) + calculate_cash_on_delivery_fee(cart.total_price_with_tax)) * 0.1
+    TaxRate.calculate_tax_amount(calculate_shipping_fee(cart) + calculate_cash_on_delivery_fee(cart.total_price_with_tax))
   end
 
   def preview_total_amount(cart)

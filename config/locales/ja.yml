@@ -113,6 +113,8 @@ ja:
       validate_food_is_published: 公開されている食品のみを追加することができます
       validate_user_have_address: 注文には住所を登録する必要があります
       cart_processing_error: カートの処理中にエラーが発生しました。恐れ入りますが、もう一度お試しください
+      food_not_available: "「%{name}」は現在購入できません"
+      price_changed: "「%{name}」の価格が変更されています"
     template:
       body: 次の項目を確認してください
       header: "%{model}に%{count}個のエラーが発生しました"
