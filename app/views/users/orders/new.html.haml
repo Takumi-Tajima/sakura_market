@@ -28,8 +28,7 @@
       .card.mb-4
         .card-header.d-flex.justify-content-between
           %h5.mb-0= t('order.delivery_details')
-          -# TODO: ユーザー住所の変更リンクにする
-          = link_to t('users.address.edit'), root_path
+          = link_to t('users.address.edit'), edit_user_registration_path
         .card-body
           .row.mb-2
             .col-3

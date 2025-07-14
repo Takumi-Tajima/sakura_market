@@ -10,6 +10,9 @@ ja:
         password: パスワード
         address: 住所
         password_confirmation: パスワード確認
+        created_at: 登録日
+        last_sign_in_at: 最終ログイン
+        sign_in_count: ログイン回数
       admin:
         email: メールアドレス
         password: パスワード
@@ -60,6 +63,15 @@ ja:
   users:
     address:
       edit: 住所を編集する
+    status:
+      never_signed_in: 未ログイン
+    navigation:
+      orders: 注文履歴
+      cart: カート
+  admins:
+    navigation:
+      users: ユーザー一覧
+      orders: 注文一覧
   cart:
     add: カートに追加する
     total: 合計
@@ -68,7 +80,6 @@ ja:
     subtotal: 小計
   order:
     confirm: 注文を確認する
-    history: 注文履歴
     empty: 注文履歴がありません。
     users_info: ユーザー情報
     delivery_details: 配送先情報
