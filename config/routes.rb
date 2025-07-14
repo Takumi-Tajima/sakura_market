@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     root 'foods#index'
     resources :foods
     resources :orders, only: %i[index show]
+    resources :users, only: %i[index show edit update destroy]
   end
 
   namespace :users do

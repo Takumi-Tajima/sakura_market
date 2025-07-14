@@ -1,0 +1,17 @@
+.mt-4
+  %h1.fs-2.mb-3 ユーザー一覧
+
+  %table.table
+    %thead
+      %tr
+        %th= User.human_attribute_name(:name)
+        %th= User.human_attribute_name(:email)
+        %th= User.human_attribute_name(:created_at)
+        %th= User.human_attribute_name(:last_sign_in_at)
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= link_to user.name, admins_user_path(user)
+          %td= user.email
+          %td= l(user.created_at)
+          %td= user.last_sign_in_at ? l(user.last_sign_in_at) : t('users.status.never_signed_in')

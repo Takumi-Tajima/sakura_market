@@ -10,6 +10,9 @@ ja:
         password: パスワード
         address: 住所
         password_confirmation: パスワード確認
+        created_at: 登録日
+        last_sign_in_at: 最終ログイン
+        sign_in_count: ログイン回数
       admin:
         email: メールアドレス
         password: パスワード
