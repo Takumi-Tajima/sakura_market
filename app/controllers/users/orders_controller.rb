@@ -1,7 +1,7 @@
 class Users::OrdersController < Users::ApplicationController
   before_action :require_cart_items, only: %i[new create]
   before_action :set_order, only: %i[show]
-  before_action :set_cart_items, only: %i[new]
+  before_action :set_cart_items, only: %i[new create]
 
   def index
     @orders = current_user.orders.default_order
