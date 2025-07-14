@@ -68,6 +68,7 @@ ja:
   order:
     confirm: 注文を確認する
     history: 注文履歴
+    empty: 注文履歴がありません。
     delivery_details: 配送先情報
     delivery_on:
       prompt: 配送日を選択してください

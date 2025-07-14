@@ -9,22 +9,18 @@
             %table.table.table-hover
               %thead
                 %tr
-                  %th 注文日時
-                  %th 配送日
-                  %th 配送時間帯
-                  %th 合計金額
                   %th
+                  %th= Order.human_attribute_name(:ordered_at)
+                  %th= Order.human_attribute_name(:delivery_on)
+                  %th= Order.human_attribute_name(:delivery_time_slot)
+                  %th= Order.human_attribute_name(:total_amount)
               %tbody
                 - @orders.each do |order|
                   %tr
+                    %td= link_to order.id, users_order_path(order)
                     %td= l(order.ordered_at, format: :long)
                     %td= l(order.delivery_on)
                     %td= order.delivery_time_slot
                     %td= number_to_currency(order.total_amount)
-                    %td
-                      = link_to '詳細', users_order_path(order), class: 'btn btn-sm btn-outline-primary'
       - else
-        .text-center.py-5
-          %h4.text-muted まだ注文履歴がありません
-          %p.text-muted 商品を注文すると、こちらに履歴が表示されます。
-          = link_to '商品を見る', foods_path, class: 'btn btn-primary'
+        .text-center.fs-2= t('order.empty')
