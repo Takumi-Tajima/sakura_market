@@ -35,6 +35,7 @@ ja:
         delivery_name: 配送先名
         delivery_address: 配送先住所
         ordered_at: 注文日時
+        order_items: 注文商品
   general:
     login: ログイン
     logout: ログアウト
@@ -55,6 +56,9 @@ ja:
       created: カートに追加しました。
     orders:
       created: 注文をしました。
+  users:
+    address:
+      edit: 住所を編集する
   cart:
     add: カートに追加する
     total: 合計
@@ -63,3 +67,20 @@ ja:
     subtotal: 小計
   order:
     confirm: 注文を確認する
+    delivery_details: 配送先情報
+    delivery_on:
+      prompt: 配送日を選択してください
+      help_text: ご注文日から3日後〜14日後の平日でご指定いただけます
+    delivery_time_slot:
+      prompt: 配送時間帯を選択してください
+    price_breakdown:
+      title: 料金内訳
+      labels:
+        item_total_without_tax: 商品代金（税抜）
+        shipping_without_tax: 送料（税抜）
+        cod_fee_without_tax: 代引き手数料（税抜）
+        item_tax: 商品税額（8%）
+        service_fees_tax: 送料・代引き手数料税額（10%）
+        total_payment: お支払い金額
+    actions:
+      confirm_order: 注文を確定する

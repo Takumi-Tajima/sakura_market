@@ -133,7 +133,8 @@ ja:
         significant: false
         strip_insignificant_zeros: false
         unit: 円(税込)
-    format:
+      tax_excluded_format:
+        unit: 円
       delimiter: ","
       precision: 3
       round_mode: default

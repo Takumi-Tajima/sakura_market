@@ -1,6 +1,6 @@
 class Users::OrdersController < Users::ApplicationController
   before_action :require_cart_items, only: %i[new create]
-  before_action :set_cart_items, only: %i[new create]
+  before_action :set_cart_items, only: %i[new]
 
   def new
     @order = current_user.orders.build
