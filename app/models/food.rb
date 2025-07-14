@@ -13,6 +13,8 @@ class Food < ApplicationRecord
 
   acts_as_list
 
+  before_destroy :prevent_destroy_if_published
+
   validates :name, presence: true
   validates :description, presence: true
   validates :price, numericality: { greater_than: 0 }
@@ -24,5 +26,14 @@ class Food < ApplicationRecord
 
   def price_with_tax
     BigDecimal(price) * BigDecimal(TaxRate.reduced.to_s)
+  end
+
+  private
+
+  def prevent_destroy_if_published
+    if published?
+      errors.add(:base, :prevent_destroy_if_published)
+      throw :abort
+    end
   end
 end

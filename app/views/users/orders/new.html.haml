@@ -2,6 +2,9 @@
   .row
     .col-8.mx-auto
       %h1.fs-2.mb-4 注文確認
+      .alert.alert-warning
+        %i.bi.bi-info-circle
+        商品価格は変更される場合があります。最新の価格を確認するには、ページを再読み込みしてください。
       = render 'layouts/shared/error_messages', resource: @order
       .card.mb-4
         .card-header

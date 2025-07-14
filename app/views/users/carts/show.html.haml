@@ -2,6 +2,9 @@
   .row
     .col-8.mx-auto
       %h1.fs-2.mb-4 カート
+      .alert.alert-warning
+        %i.bi.bi-info-circle
+        商品価格は変更される場合があります。最新の価格を確認するには、ページを再読み込みしてください。
 
       - if @cart_items.any?
         .card
