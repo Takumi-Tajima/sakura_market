@@ -10,7 +10,7 @@ class Users::Carts::CartItemsController < Users::ApplicationController
     @cart_item = current_cart.cart_items.build(cart_item_params)
 
     if @cart_item.save
-      redirect_to users_cart_path, notice: t('controllers.cart_items.added')
+      redirect_to users_cart_path, notice: t('controllers.cart_items.created')
     else
       @food = @cart_item.food
       render :new, status: :unprocessable_content

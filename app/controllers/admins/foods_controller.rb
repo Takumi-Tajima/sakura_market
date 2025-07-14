@@ -34,8 +34,11 @@ class Admins::FoodsController < Admins::ApplicationController
   end
 
   def destroy
-    @food.destroy!
-    redirect_to admins_foods_path, notice: t('controllers.destroyed'), status: :see_other
+    if @food.destroy
+      redirect_to admins_foods_path, notice: t('controllers.destroyed'), status: :see_other
+    else
+      redirect_to admins_foods_path, alert: @food.errors.full_messages.join(', ')
+    end
   end
 
   private

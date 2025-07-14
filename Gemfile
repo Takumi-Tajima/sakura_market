@@ -7,6 +7,7 @@ gem 'acts_as_list'
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'devise'
+gem 'enumerize'
 gem 'haml-rails'
 gem 'image_processing'
 gem 'jsbundling-rails'

@@ -1,0 +1,26 @@
+.mt-3
+  .row
+    .col-10.mx-auto
+      %h1.fs-2.mb-4 注文履歴
+
+      - if @orders.any?
+        .card
+          .card-body
+            %table.table.table-hover
+              %thead
+                %tr
+                  %th
+                  %th= Order.human_attribute_name(:ordered_at)
+                  %th= Order.human_attribute_name(:delivery_on)
+                  %th= Order.human_attribute_name(:delivery_time_slot)
+                  %th= Order.human_attribute_name(:total_amount)
+              %tbody
+                - @orders.each do |order|
+                  %tr
+                    %td= link_to order.id, users_order_path(order)
+                    %td= l(order.ordered_at, format: :long)
+                    %td= l(order.delivery_on)
+                    %td= order.delivery_time_slot
+                    %td= number_to_currency(order.total_amount)
+      - else
+        .text-center.fs-2= t('order.empty')

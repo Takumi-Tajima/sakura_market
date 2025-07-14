@@ -21,8 +21,22 @@ ja:
         published: 公開状況
         position: 表示順
         cover_image: 食品の画像
+        order_items: 注文商品
       cart_item:
         quantity: 個数
+      order:
+        user: ユーザー
+        total_amount: 合計金額
+        item_total_amount: 商品合計
+        shipping_fee: 配送料
+        cash_on_delivery_fee: 代金引換手数料
+        tax_amount: 税額
+        delivery_on: 配送日
+        delivery_time_slot: 配送時間帯
+        delivery_name: 配送先名
+        delivery_address: 配送先住所
+        ordered_at: 注文日時
+        order_items: 注文商品
   general:
     login: ログイン
     logout: ログアウト
@@ -40,10 +54,37 @@ ja:
     updated: 更新しました。
     destroyed: 削除しました。
     cart_items:
-      added: カートに追加しました。
+      created: カートに追加しました。
+    orders:
+      created: 注文をしました。
+  users:
+    address:
+      edit: 住所を編集する
   cart:
     add: カートに追加する
     total: 合計
     empty: カートに商品がありません。
   cart_item:
     subtotal: 小計
+  order:
+    confirm: 注文を確認する
+    history: 注文履歴
+    empty: 注文履歴がありません。
+    users_info: ユーザー情報
+    delivery_details: 配送先情報
+    delivery_on:
+      prompt: 配送日を選択してください
+      help_text: ご注文日から3日後〜14日後の平日でご指定いただけます
+    delivery_time_slot:
+      prompt: 配送時間帯を選択してください
+    price_breakdown:
+      title: 料金内訳
+      labels:
+        item_total_without_tax: 商品代金（税抜）
+        shipping_without_tax: 送料（税抜）
+        cod_fee_without_tax: 代引き手数料（税抜）
+        item_tax: 商品税額（8%）
+        service_fees_tax: 送料・代引き手数料税額（10%）
+        total_payment: お支払い金額
+    actions:
+      confirm_order: 注文を確定する

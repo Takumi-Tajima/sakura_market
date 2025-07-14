@@ -125,10 +125,19 @@ GEM
       responders
       warden (~> 1.2.3)
     drb (2.2.3)
+    enumerize (2.8.1)
+      activesupport (>= 3.2)
     erb (5.0.1)
     erubi (1.13.1)
     erubis (2.7.0)
+    ffi (1.17.2-aarch64-linux-gnu)
+    ffi (1.17.2-aarch64-linux-musl)
+    ffi (1.17.2-arm-linux-gnu)
+    ffi (1.17.2-arm-linux-musl)
     ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
+    ffi (1.17.2-x86_64-linux-musl)
     globalid (1.2.1)
       activesupport (>= 6.1)
     haml (6.3.0)
@@ -393,6 +402,7 @@ DEPENDENCIES
   bullet
   cssbundling-rails
   devise
+  enumerize
   haml-rails
   haml_lint
   html2haml

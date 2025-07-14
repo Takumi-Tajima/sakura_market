@@ -9,8 +9,11 @@ class Food < ApplicationRecord
   end
 
   has_many :cart_items, dependent: :destroy
+  has_many :order_items, dependent: :restrict_with_error
 
   acts_as_list
+
+  before_destroy :prevent_destroy_if_published
 
   validates :name, presence: true
   validates :description, presence: true
@@ -22,6 +25,15 @@ class Food < ApplicationRecord
   scope :published, -> { where(published: true) }
 
   def price_with_tax
-    BigDecimal(price) * BigDecimal(TaxRate.default.to_s)
+    BigDecimal(price) * BigDecimal(TaxRate.reduced.to_s)
+  end
+
+  private
+
+  def prevent_destroy_if_published
+    if published?
+      errors.add(:base, :prevent_destroy_if_published)
+      throw :abort
+    end
   end
 end
