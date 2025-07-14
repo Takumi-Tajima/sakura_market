@@ -1,8 +1,28 @@
 .mt-3
   .row
-    .col-10.mx-auto
+    .col-12
       .d-flex.justify-content-between.align-items-center.mb-4
-        %h1.fs-2 注文詳細
+        %h1.fs-2 注文詳細 ##{@order.id}
+
+      .card.mb-4
+        .card-header
+          .fs-5.mb-0= t('order.users_info')
+        .card-body
+          .row.mb-2
+            .col-3
+              %p.mb-0= User.human_attribute_name(:name)
+            .col-9
+              %p.fw-bold= @order.user.name
+          .row.mb-2
+            .col-3
+              %p.mb-0= User.human_attribute_name(:email)
+            .col-9
+              %p.fw-bold= @order.user.email
+          .row
+            .col-3
+              %p.mb-0= User.human_attribute_name(:address)
+            .col-9
+              %p.fw-bold= @order.user.address
 
       .card.mb-4
         .card-header
@@ -38,24 +58,24 @@
         .card-header
           .fs-5= Order.human_attribute_name(:order_items)
         .card-body
-          - @order.order_items.includes(:food).each do |item|
-            .row.py-3.border-bottom
-              .col-4
-                %h6= item.food.name
-                %p.text-muted.small= item.food.description
-              .col-2
-                %p.mb-0.small= CartItem.human_attribute_name(:quantity)
-                %p.fw-bold= item.quantity
-              .col-3
-                %p.mb-0.small= Food.human_attribute_name(:price)
-                %p.fw-bold= number_to_currency(item.price)
-              .col-3
-                %p.mb-0.small= t('cart_item.subtotal')
-                %p.fw-bold= number_to_currency(item.price * item.quantity)
+          %table.table
+            %thead
+              %tr
+                %th= Food.human_attribute_name(:name)
+                %th= CartItem.human_attribute_name(:quantity)
+                %th= Food.human_attribute_name(:price)
+                %th= t('cart_item.subtotal')
+            %tbody
+              - @order.order_items.includes(:food).each do |item|
+                %tr
+                  %td= item.food.name
+                  %td= item.quantity
+                  %td= number_to_currency(item.price)
+                  %td= number_to_currency(item.price * item.quantity)
 
       .card.mb-4
         .card-header
-          %h5.mb-0= t('order.price_breakdown.title')
+          .fs-5= t('order.price_breakdown.title')
         .card-body
           .row.py-2
             .col-8

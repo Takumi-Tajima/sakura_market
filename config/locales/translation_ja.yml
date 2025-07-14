@@ -25,6 +25,7 @@ ja:
       cart_item:
         quantity: 個数
       order:
+        user: ユーザー
         total_amount: 合計金額
         item_total_amount: 商品合計
         shipping_fee: 配送料
@@ -69,6 +70,7 @@ ja:
     confirm: 注文を確認する
     history: 注文履歴
     empty: 注文履歴がありません。
+    users_info: ユーザー情報
     delivery_details: 配送先情報
     delivery_on:
       prompt: 配送日を選択してください

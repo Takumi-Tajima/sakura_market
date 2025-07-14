@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   namespace :admins do
     root 'foods#index'
     resources :foods
+    resources :orders, only: %i[index show]
   end
 
   namespace :users do

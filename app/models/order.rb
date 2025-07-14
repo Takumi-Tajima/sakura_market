@@ -84,6 +84,29 @@ class Order < ApplicationRecord
     end
   end
 
+  def item_total_without_tax
+    (item_total_amount / 1.08).floor
+  end
+
+  def item_tax_amount
+    item_total_amount - item_total_without_tax
+  end
+
+  def service_fees_tax_display_amount
+    tax_amount - item_tax_amount
+  end
+
+  def preview_service_fees_tax_amount(cart)
+    (calculate_shipping_fee(cart) + calculate_cash_on_delivery_fee(cart.total_price_with_tax)) * 0.1
+  end
+
+  def preview_total_amount(cart)
+    cart.total_price_with_tax + 
+    calculate_shipping_fee(cart) + 
+    calculate_cash_on_delivery_fee(cart.total_price_with_tax) + 
+    preview_service_fees_tax_amount(cart).floor
+  end
+
   private
 
   def calculate_service_fees_tax_amount
