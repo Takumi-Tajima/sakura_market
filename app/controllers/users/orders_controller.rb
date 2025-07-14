@@ -10,6 +10,7 @@ class Users::OrdersController < Users::ApplicationController
     @order = current_user.orders.build(order_params)
 
     if @order.save_with_cart_items(current_cart)
+      # TODO: i18nにする
       redirect_to foods_path, notice: '注文しました'
     else
       render :new, status: :unprocessable_content

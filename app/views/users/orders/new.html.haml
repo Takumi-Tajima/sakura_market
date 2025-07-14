@@ -58,7 +58,7 @@
               .col-md-6.mb-3
                 = f.input :delivery_time_slot,
                   as: :select,
-                  collection: Order::DELIVERY_TIME_ZONES_AVAILABLE.map { |slot| [slot, slot] },
+                  collection: Order::DELIVERY_TIME_SLOTS.map { |slot| [slot, slot] },
                   label: '配送時間帯',
                   prompt: '時間帯を選択してください',
                   input_html: { class: 'form-select' },
