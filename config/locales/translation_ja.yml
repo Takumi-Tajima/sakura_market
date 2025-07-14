@@ -63,6 +63,8 @@ ja:
   users:
     address:
       edit: 住所を編集する
+    status:
+      never_signed_in: 未ログイン
   cart:
     add: カートに追加する
     total: 合計

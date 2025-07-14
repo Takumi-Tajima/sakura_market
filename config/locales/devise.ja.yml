@@ -1,7 +1,7 @@
 ja:
   activerecord:
     attributes:
-      user:
+      user: &common_user_attributes
         confirmation_sent_at: パスワード確認送信時刻
         confirmation_token: パスワード確認用トークン
         confirmed_at: パスワード確認時刻
@@ -25,8 +25,11 @@ ja:
         unconfirmed_email: 未確認Eメール
         unlock_token: ロック解除用トークン
         updated_at: 更新日
+      admin:
+        <<: *common_user_attributes
     models:
       user: ユーザー
+      admin: 管理者
   devise:
     confirmations:
       confirmed: メールアドレスが確認できました。
@@ -120,7 +123,7 @@ ja:
         back: 戻る
         didn_t_receive_confirmation_instructions: アカウント確認のメールを受け取っていませんか？
         didn_t_receive_unlock_instructions: アカウントのロック解除方法のメールを受け取っていませんか？
-        forgot_your_password: パスワードを忘れましたか？
+        forgot_your_password: パスワードを忘れてしまった場合
         sign_in: ログイン
         sign_in_with_provider: "%{provider}でログイン"
         sign_up: アカウント登録
