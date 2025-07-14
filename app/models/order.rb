@@ -1,8 +1,8 @@
 class Order < ApplicationRecord
   extend Enumerize
 
-  MIN_DELIVERY_DAYS = 3
-  MAX_DELIVERY_DAYS = 14
+  MIN_DELIVERY_DAY = 3
+  MAX_DELIVERY_DAY = 14
   DELIVERY_TIME_SLOTS = %w[08-12 12-14 14-16 16-18 18-20 20-21].freeze
   SHIPPING_FEE_PER_BOX = 600
   MAX_ITEMS_PER_BOX = 5
@@ -12,18 +12,16 @@ class Order < ApplicationRecord
   belongs_to :user
   has_many :order_items, dependent: :destroy
 
-  # TODO: バリデーション追加
   validates :total_amount, numericality: { greater_than: 0 }
   validates :item_total_amount, numericality: { greater_than: 0 }
   validates :tax_amount, numericality: { greater_than: 0 }
   validates :shipping_fee, numericality: { greater_than: 0 }
   validates :cash_on_delivery_fee, numericality: { greater_than: 0 }
   validates :delivery_time_slot, presence: true
-  validates :delivery_on, presence: true
+  validates :delivery_on, presence: true, inclusion: { in: -> { available_delivery_dates } }
   validates :delivery_name, presence: true
   validates :delivery_address, presence: true
   validates :ordered_at, presence: true
-  validate :validate_delivery_on_is_available
 
   def save_with_cart_items(cart)
     transaction do
@@ -51,7 +49,6 @@ class Order < ApplicationRecord
     end
   end
 
-  # TODO: ロジックだが、viewでも使用されている。ビューで使用するのは避けた方がいいのか？その場合はどうやってビューに表示しようか
   def calculate_cash_on_delivery_fee(total_amount)
     case total_amount
     when 0...10_000
@@ -65,9 +62,8 @@ class Order < ApplicationRecord
     end
   end
 
-  # TODO: これもビューで使用されているが良いのか？
   def self.available_delivery_dates
-    (MIN_DELIVERY_DAYS..MAX_DELIVERY_DAYS).map do |days|
+    (MIN_DELIVERY_DAY..MAX_DELIVERY_DAY).map do |days|
       Date.current + days
     end.select(&:on_weekday?)
   end
@@ -97,15 +93,5 @@ class Order < ApplicationRecord
 
     # 総合計
     self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + fees_tax
-  end
-
-  # TODO: 他に必要なバリデーションあるか？
-  def validate_delivery_on_is_available
-    available_dates = Order.available_delivery_dates
-
-    unless available_dates.include?(delivery_on)
-      # TODO: エラーメッセージはlocalを利用する
-      errors.add(:delivery_on, '選択可能な配送日を指定してください')
-    end
   end
 end
