@@ -1,0 +1,30 @@
+.mt-3
+  .row
+    .col-10.mx-auto
+      %h1.fs-2.mb-4 注文履歴
+
+      - if @orders.any?
+        .card
+          .card-body
+            %table.table.table-hover
+              %thead
+                %tr
+                  %th 注文日時
+                  %th 配送日
+                  %th 配送時間帯
+                  %th 合計金額
+                  %th
+              %tbody
+                - @orders.each do |order|
+                  %tr
+                    %td= l(order.ordered_at, format: :long)
+                    %td= l(order.delivery_on)
+                    %td= order.delivery_time_slot
+                    %td= number_to_currency(order.total_amount)
+                    %td
+                      = link_to '詳細', users_order_path(order), class: 'btn btn-sm btn-outline-primary'
+      - else
+        .text-center.py-5
+          %h4.text-muted まだ注文履歴がありません
+          %p.text-muted 商品を注文すると、こちらに履歴が表示されます。
+          = link_to '商品を見る', foods_path, class: 'btn btn-primary'

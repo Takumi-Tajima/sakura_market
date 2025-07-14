@@ -1,0 +1,85 @@
+.mt-3
+  .row
+    .col-10.mx-auto
+      .d-flex.justify-content-between.align-items-center.mb-4
+        %h1.fs-2 注文詳細
+        = link_to '購入履歴に戻る', users_orders_path, class: 'btn btn-outline-secondary'
+      
+      .card.mb-4
+        .card-header
+          %h5.mb-0 注文情報
+        .card-body
+          .row.mb-2
+            .col-3
+              %p.mb-0 注文日時
+            .col-9
+              %p.fw-bold= l(@order.ordered_at, format: :long)
+          .row.mb-2
+            .col-3
+              %p.mb-0 配送日
+            .col-9
+              %p.fw-bold= l(@order.delivery_on)
+          .row.mb-2
+            .col-3
+              %p.mb-0 配送時間帯
+            .col-9
+              %p.fw-bold= @order.delivery_time_slot
+          .row.mb-2
+            .col-3
+              %p.mb-0 配送先名
+            .col-9
+              %p.fw-bold= @order.delivery_name
+          .row
+            .col-3
+              %p.mb-0 配送先住所
+            .col-9
+              %p.fw-bold= @order.delivery_address
+
+      .card.mb-4
+        .card-header
+          %h5.mb-0 注文商品
+        .card-body
+          - @order.order_items.includes(:food).each do |item|
+            .row.py-3.border-bottom
+              .col-4
+                %h6= item.food.name
+                %p.text-muted.small= item.food.description
+              .col-2
+                %p.mb-0.small 個数
+                %p.fw-bold= item.quantity
+              .col-3
+                %p.mb-0.small 単価（税込）
+                %p.fw-bold= number_to_currency(item.price)
+              .col-3
+                %p.mb-0.small 小計（税込）
+                %p.fw-bold= number_to_currency(item.price * item.quantity)
+
+      .card.mb-4
+        .card-header
+          %h5.mb-0 料金詳細
+        .card-body
+          .row.py-2
+            .col-8
+              %span 商品代金（税込）
+            .col-4.text-end
+              %span= number_to_currency(@order.item_total_amount)
+          .row.py-2
+            .col-8
+              %span 送料（税抜）
+            .col-4.text-end
+              %span= number_to_currency(@order.shipping_fee, unit: '円')
+          .row.py-2
+            .col-8
+              %span 代引き手数料（税抜）
+            .col-4.text-end
+              %span= number_to_currency(@order.cash_on_delivery_fee, unit: '円')
+          .row.py-2
+            .col-8
+              %span 税額
+            .col-4.text-end
+              %span= number_to_currency(@order.tax_amount, unit: '円')
+          .row.py-2.border-top.pt-3
+            .col-8
+              %h5.mb-0 合計金額
+            .col-4.text-end
+              %h5.fw-bold.text-primary= number_to_currency(@order.total_amount)

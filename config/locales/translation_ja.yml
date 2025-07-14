@@ -67,6 +67,7 @@ ja:
     subtotal: 小計
   order:
     confirm: 注文を確認する
+    history: 注文履歴
     delivery_details: 配送先情報
     delivery_on:
       prompt: 配送日を選択してください

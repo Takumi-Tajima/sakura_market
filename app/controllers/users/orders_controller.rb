@@ -1,6 +1,14 @@
 class Users::OrdersController < Users::ApplicationController
   before_action :require_cart_items, only: %i[new create]
+  before_action :set_order, only: %i[show]
   before_action :set_cart_items, only: %i[new]
+
+  def index
+    @orders = current_user.orders.default_order
+  end
+
+  def show
+  end
 
   def new
     @order = current_user.orders.build
@@ -26,6 +34,10 @@ class Users::OrdersController < Users::ApplicationController
 
   def set_cart_items
     @cart_items = current_cart.cart_items.includes(:food).default_order
+  end
+
+  def set_order
+    @order = current_user.orders.find(params.expect(:id))
   end
 
   def order_params

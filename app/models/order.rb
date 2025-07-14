@@ -12,6 +12,8 @@ class Order < ApplicationRecord
   belongs_to :user
   has_many :order_items, dependent: :destroy
 
+  scope :default_order, -> { order(id: :desc) }
+
   validates :total_amount, numericality: { greater_than: 0 }
   validates :item_total_amount, numericality: { greater_than: 0 }
   validates :tax_amount, numericality: { greater_than: 0 }
