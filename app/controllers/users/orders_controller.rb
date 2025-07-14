@@ -9,7 +9,7 @@ class Users::OrdersController < Users::ApplicationController
   def create
     @order = current_user.orders.build(order_params)
 
-    if @order.save_with_cart_items(current_cart)
+    if @order.save_with_order_items_and_delete_cart(current_cart)
       # TODO: i18nにする
       redirect_to foods_path, notice: '注文しました'
     else

@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   MAX_DELIVERY_DAY = 14
   DELIVERY_TIME_SLOTS = %w[08-12 12-14 14-16 16-18 18-20 20-21].freeze
   SHIPPING_FEE_PER_BOX = 600
-  MAX_ITEMS_PER_BOX = 5
+  MAX_ITEMS_PER_BOX = 5.0
 
   enumerize :delivery_time_slot, in: DELIVERY_TIME_SLOTS
 
@@ -18,14 +18,14 @@ class Order < ApplicationRecord
   validates :shipping_fee, numericality: { greater_than: 0 }
   validates :cash_on_delivery_fee, numericality: { greater_than: 0 }
   validates :delivery_time_slot, presence: true
-  validates :delivery_on, presence: true, inclusion: { in: -> { available_delivery_dates } }
+  validates :delivery_on, inclusion: { in: -> { available_delivery_dates } }
   validates :delivery_name, presence: true
   validates :delivery_address, presence: true
   validates :ordered_at, presence: true
 
-  def save_with_cart_items(cart)
+  def save_with_order_items_and_delete_cart(cart)
     transaction do
-      cart.cart_items.find_each do |cart_item|
+      cart.cart_items.each do |cart_item|
         order_items.build(
           food: cart_item.food,
           quantity: cart_item.quantity,
@@ -33,16 +33,24 @@ class Order < ApplicationRecord
         )
       end
 
-      calculate_order_amounts(cart)
-
       self.ordered_at = Time.current
       self.delivery_name = user.name
       self.delivery_address = user.address
 
+      self.item_total_amount = cart.total_price_with_tax
+      self.shipping_fee = calculate_shipping_fee(cart)
+      self.cash_on_delivery_fee = calculate_cash_on_delivery_fee(item_total_amount)
+      self.tax_amount = cart.total_tax_amount + calculate_service_fees_tax_amount
+      self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + tax_amount
+
       if save
-        # MEMO: カートを消した方がいいのか、カートアイテムを消した方がいいのかわからない
-        cart.destroy!
-        true
+        begin
+          cart.destroy!
+          true
+        rescue StandardError
+          errors.add(:base, :cart_processing_error)
+          raise ActiveRecord::Rollback
+        end
       else
         false
       end
@@ -62,36 +70,21 @@ class Order < ApplicationRecord
     end
   end
 
-  def self.available_delivery_dates
-    (MIN_DELIVERY_DAY..MAX_DELIVERY_DAY).map do |days|
-      Date.current + days
-    end.select(&:on_weekday?)
-  end
-
-  # TODO: 小数点計算なのでロジックを調査する。このメソッドもビューで使用されているが良いのか？
   def calculate_shipping_fee(cart)
     total_quantity = cart.cart_items.sum(:quantity)
-    # TODO: マジックナンバー5を定数化する
     (total_quantity / MAX_ITEMS_PER_BOX).ceil * SHIPPING_FEE_PER_BOX
+  end
+
+  def self.available_delivery_dates
+    (MIN_DELIVERY_DAY..MAX_DELIVERY_DAY).filter_map do |days|
+      date = Date.current + days
+      date if date.on_weekday?
+    end
   end
 
   private
 
-  def calculate_order_amounts(cart)
-    # 商品合計
-    self.item_total_amount = cart.total_price_with_tax
-
-    # 送料と代引き手数料
-    self.shipping_fee = calculate_shipping_fee(cart)
-    self.cash_on_delivery_fee = calculate_cash_on_delivery_fee(item_total_amount)
-
-    # 税額計算
-    # TODO: なんかここら辺のロジックはもっときれいに書けそう
-    items_tax = order_items.sum { |item| (item.price * item.quantity * 0.1).floor }
-    fees_tax = ((shipping_fee + cash_on_delivery_fee) * 0.1).floor
-    self.tax_amount = items_tax + fees_tax
-
-    # 総合計
-    self.total_amount = item_total_amount + shipping_fee + cash_on_delivery_fee + fees_tax
+  def calculate_service_fees_tax_amount
+    TaxRate.calculate_tax_amount(shipping_fee + cash_on_delivery_fee)
   end
 end
