@@ -27,6 +27,7 @@ ja:
         order_items: 注文商品
       cart_item:
         quantity: 個数
+        food: 食品
       order:
         user: ユーザー
         total_amount: 合計金額
