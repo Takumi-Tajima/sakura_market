@@ -1,27 +1,26 @@
-.mt-4
-  %h1.fs-2.mb-3 食品詳細
+%h1.fs-2.mb-3 食品詳細
 
-  .card
-    .card-body
-      .row
-        .col-md-6
-          = food_cover_tag(@food, :medium)
-        .col-md-6
-          %dl.row
-            %dt.col-sm-4= Food.human_attribute_name(:name)
-            %dd.col-sm-8= @food.name
+.card
+  .card-body
+    .row
+      .col-md-6
+        = food_cover_tag(@food, :medium)
+      .col-md-6
+        %dl.row
+          %dt.col-sm-4= Food.human_attribute_name(:name)
+          %dd.col-sm-8= @food.name
 
-            %dt.col-sm-4= Food.human_attribute_name(:description)
-            %dd.col-sm-8= @food.description
+          %dt.col-sm-4= Food.human_attribute_name(:description)
+          %dd.col-sm-8= @food.description
 
-            %dt.col-sm-4= Food.human_attribute_name(:price)
-            %dd.col-sm-8= number_to_currency(@food.price_with_tax)
+          %dt.col-sm-4= Food.human_attribute_name(:price)
+          %dd.col-sm-8= number_to_currency(@food.price_with_tax)
 
-            %dt.col-sm-4= Food.human_attribute_name(:published)
-            %dd.col-sm-8= @food.published ? "#{t('general.public')}" : "#{t('general.private')}"
+          %dt.col-sm-4= Food.human_attribute_name(:published)
+          %dd.col-sm-8= @food.published ? "#{t('general.public')}" : "#{t('general.private')}"
 
-  .mt-3.d-flex.justify-content-between
-    = link_to t('general.edit'), edit_admins_food_path(@food), class: 'btn btn-primary'
-    = button_to t('general.destroy'), admins_food_path(@food), method: :delete, data: { turbo_confirm: t('views.confirm') }, class: 'btn btn-outline-danger'
-  .mt-5
-    = link_to t('general.back'), admins_foods_path
+.mt-3.d-flex.justify-content-between
+  = link_to t('general.edit'), edit_admins_food_path(@food), class: 'btn btn-primary'
+  = button_to t('general.destroy'), admins_food_path(@food), method: :delete, data: { turbo_confirm: t('views.confirm') }, class: 'btn btn-outline-danger'
+.mt-5
+  = link_to t('general.back'), admins_foods_path

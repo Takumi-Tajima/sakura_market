@@ -1,47 +1,46 @@
-.mt-3
-  .row
-    .col-8.mx-auto
-      %h1.fs-2.mb-4 カート
-      .alert.alert-warning
-        %i.bi.bi-info-circle
-        商品価格は変更される場合があります。最新の価格を確認するには、ページを再読み込みしてください。
+.row
+  .col-8.mx-auto
+    %h1.fs-2.mb-4 カート
+    .alert.alert-warning
+      %i.bi.bi-info-circle
+      商品価格は変更される場合があります。最新の価格を確認するには、ページを再読み込みしてください。
 
-      - if @cart_items.any?
-        .card
-          .card-body
-            - @cart_items.each do |item|
-              .row.py-3.border-bottom
-                .col-2
-                  = food_cover_tag(item.food, :medium)
-                .col-3
-                  %h5= item.food.name
-                  %p.text-muted= item.food.description
-                .col-1
-                  %p.mb-0= CartItem.human_attribute_name(:quantity)
-                  %p.fw-bold= item.quantity
-                .col-2
-                  %p.mb-0= Food.human_attribute_name(:price)
-                  %p.fw-bold= number_to_currency(item.food.price_with_tax)
-                .col-2
-                  %p.mb-0= t('cart_item.subtotal')
-                  %p.fw-bold= number_to_currency(item.total_price_with_tax)
-                .col-2
-                  .d-flex.flex-column.gap-2
-                    = link_to t('general.edit'), edit_users_cart_cart_item_path(item), class: 'btn btn-sm btn-outline-primary'
-                    = button_to t('general.destroy'), users_cart_cart_item_path(item), method: :delete, data: { turbo_confirm: t('views.confirm') }, class: 'btn btn-sm btn-outline-danger'
+    - if @cart_items.any?
+      .card
+        .card-body
+          - @cart_items.each do |item|
+            .row.py-3.border-bottom
+              .col-2
+                = food_cover_tag(item.food, :medium)
+              .col-3
+                .fs-5= item.food.name
+                %p.text-muted= item.food.description
+              .col-1
+                %p.mb-0= CartItem.human_attribute_name(:quantity)
+                %p.fw-bold= item.quantity
+              .col-2
+                %p.mb-0= Food.human_attribute_name(:price)
+                %p.fw-bold= number_to_currency(item.food.price_with_tax)
+              .col-2
+                %p.mb-0= t('cart_item.subtotal')
+                %p.fw-bold= number_to_currency(item.total_price_with_tax)
+              .col-2
+                .d-flex.flex-column.gap-2
+                  = link_to t('general.edit'), edit_users_cart_cart_item_path(item), class: 'btn btn-sm btn-outline-primary'
+                  = button_to t('general.destroy'), users_cart_cart_item_path(item), method: :delete, data: { turbo_confirm: t('views.confirm') }, class: 'btn btn-sm btn-outline-danger'
 
-            .row.mt-4
-              .col-12.text-end
-                %h4
-                  = t('cart.total')
-                  %span.fw-bold= number_to_currency(current_cart.total_price_with_tax)
+          .row.mt-4
+            .col-12.text-end
+              %h4
+                = t('cart.total')
+                %span.fw-bold= number_to_currency(current_cart.total_price_with_tax)
 
-            .row.mt-4
-              .col-12.text-end
-                = link_to t('order.confirm'), new_users_order_path, class: 'btn btn-primary btn-lg'
-      - else
-        .alert.alert-info
-          = t('cart.empty')
+          .row.mt-4
+            .col-12.text-end
+              = link_to t('order.confirm'), new_users_order_path, class: 'btn btn-primary btn-lg'
+    - else
+      .alert.alert-info
+        = t('cart.empty')
 
-      .mt-4
-        = link_to t('general.back'), foods_path, class: 'btn btn-secondary'
+    .mt-4
+      = link_to t('general.back'), foods_path, class: 'btn btn-secondary'

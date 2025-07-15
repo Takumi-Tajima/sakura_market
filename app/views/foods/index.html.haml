@@ -1,11 +1,10 @@
-.py-5
-  .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
-    - @foods.each do |food|
-      .col
-        = link_to food_path(food), class: 'text-decoration-none' do
-          .card
-            .card-body
-              .ratio.ratio-4x3
-                = food_cover_tag(food, :thumbnail)
-              .card-title.mt-3= food.name
-              .card-text.fw-bold= number_to_currency(food.price_with_tax)
+.row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+  - @foods.each do |food|
+    .col
+      = link_to food_path(food), class: 'text-decoration-none' do
+        .card
+          .card-body
+            .ratio.ratio-4x3
+              = food_cover_tag(food, :thumbnail)
+            .card-title.mt-3= food.name
+            .card-text.fw-bold= number_to_currency(food.price_with_tax)

@@ -1,7 +1,6 @@
-.mt-4
-  %h1.fs-2.mb-3 食品新規登録
+%h1.fs-2.mb-3 食品新規登録
 
-  = render 'form', food: @food
+= render 'form', food: @food
 
-  .mt-5
-    = link_to t('general.back'), admins_foods_path
+.mt-5
+  = link_to t('general.back'), admins_foods_path

@@ -1,91 +1,90 @@
-.mt-3
-  .row
-    .col-8.mx-auto
-      %h1.fs-2.mb-4 注文確認
-      .alert.alert-warning
-        %i.bi.bi-info-circle
-        商品価格は変更される場合があります。最新の価格を確認するには、ページを再読み込みしてください。
-      = render 'layouts/shared/error_messages', resource: @order
+.row
+  .col-8.mx-auto
+    %h1.fs-2.mb-4 注文確認
+    .alert.alert-warning
+      %i.bi.bi-info-circle
+      商品価格は変更される場合があります。最新の価格を確認するには、ページを再読み込みしてください。
+    = render 'layouts/shared/error_messages', resource: @order
+    .card.mb-4
+      .card-header
+        .fs-5.mb-0= Order.human_attribute_name(:order_items)
+      .card-body
+        - @cart_items.each do |item|
+          .row.py-3.border-bottom
+            .col-3
+              %h5= item.food.name
+              %p.text-muted= item.food.description
+            .col-1
+              %p.mb-0= CartItem.human_attribute_name(:quantity)
+              %p.fw-bold= item.quantity
+            .col-2
+              %p.mb-0= Food.human_attribute_name(:price)
+              %p.fw-bold= number_to_currency(item.food.price_with_tax)
+            .col-3
+              %p.mb-0= t('cart_item.subtotal')
+              %p.fw-bold= number_to_currency(item.total_price_with_tax)
+
+    .card.mb-4
+      .card-header.d-flex.justify-content-between
+        .fs-5.mb-0= t('order.delivery_details')
+        = link_to t('users.address.edit'), edit_user_registration_path
+      .card-body
+        .row.mb-2
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:delivery_name)
+          .col-9
+            %p.fw-bold= current_user.name
+        .row.mb-3
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:delivery_address)
+          .col-9
+            %p.fw-bold= current_user.address
+
+    = simple_form_for([:users, @order]) do |f|
       .card.mb-4
         .card-header
-          %h5.mb-0= Order.human_attribute_name(:order_items)
+          .fs-5.mb-0 #{Order.human_attribute_name(:delivery_on)}・#{Order.human_attribute_name(:delivery_time_slot)}
         .card-body
-          - @cart_items.each do |item|
-            .row.py-3.border-bottom
-              .col-3
-                %h5= item.food.name
-                %p.text-muted= item.food.description
-              .col-1
-                %p.mb-0= CartItem.human_attribute_name(:quantity)
-                %p.fw-bold= item.quantity
-              .col-2
-                %p.mb-0= Food.human_attribute_name(:price)
-                %p.fw-bold= number_to_currency(item.food.price_with_tax)
-              .col-3
-                %p.mb-0= t('cart_item.subtotal')
-                %p.fw-bold= number_to_currency(item.total_price_with_tax)
-
+          %p.text-muted.mb-3= t('order.delivery_on.help_text')
+          .row
+            .col-md-6.mb-3
+              = f.input :delivery_on, as: :select, collection: Order.available_delivery_dates.map { l(it) }, prompt: t('order.delivery_on.prompt')
+            .col-md-6.mb-3
+              = f.input :delivery_time_slot, as: :select, collection: Order::DELIVERY_TIME_SLOTS, prompt: t('order.delivery_time_slot.prompt')
       .card.mb-4
-        .card-header.d-flex.justify-content-between
-          %h5.mb-0= t('order.delivery_details')
-          = link_to t('users.address.edit'), edit_user_registration_path
+        .card-header
+          .fs-5.mb-0= t('order.price_breakdown.title')
         .card-body
-          .row.mb-2
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:delivery_name)
-            .col-9
-              %p.fw-bold= current_user.name
-          .row.mb-3
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:delivery_address)
-            .col-9
-              %p.fw-bold= current_user.address
-
-      = simple_form_for([:users, @order]) do |f|
-        .card.mb-4
-          .card-header
-            %h5.mb-0 #{Order.human_attribute_name(:delivery_on)}・#{Order.human_attribute_name(:delivery_time_slot)}
-          .card-body
-            %p.text-muted.mb-3= t('order.delivery_on.help_text')
-            .row
-              .col-md-6.mb-3
-                = f.input :delivery_on, as: :select, collection: Order.available_delivery_dates.map { l(it) }, prompt: t('order.delivery_on.prompt')
-              .col-md-6.mb-3
-                = f.input :delivery_time_slot, as: :select, collection: Order::DELIVERY_TIME_SLOTS, prompt: t('order.delivery_time_slot.prompt')
-        .card.mb-4
-          .card-header
-            %h5.mb-0= t('order.price_breakdown.title')
-          .card-body
-            .row.py-2
-              .col-8
-                %span= t('order.price_breakdown.labels.item_total_without_tax')
-              .col-4.text-end
-                %span= number_to_currency(current_cart.total_price, unit: t('number.currency.tax_excluded_format.unit'))
-            .row.py-2
-              .col-8
-                %span= t('order.price_breakdown.labels.shipping_without_tax')
-              .col-4.text-end
-                %span= number_to_currency(@order.calculate_shipping_fee(current_cart), unit: t('number.currency.tax_excluded_format.unit'))
-            .row.py-2
-              .col-8
-                %span= t('order.price_breakdown.labels.cod_fee_without_tax')
-              .col-4.text-end
-                %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax), unit: t('number.currency.tax_excluded_format.unit'))
-            .row.py-2
-              .col-8
-                %span= t('order.price_breakdown.labels.item_tax')
-              .col-4.text-end
-                %span= number_to_currency(current_cart.total_tax_amount, unit: t('number.currency.tax_excluded_format.unit'))
-            .row.py-2
-              .col-8
-                %span= t('order.price_breakdown.labels.service_fees_tax')
-              .col-4.text-end
-                %span= number_to_currency(@order.calculate_service_fees_tax(current_cart), unit: t('number.currency.tax_excluded_format.unit'))
-            .row.py-2.border-top.pt-3
-              .col-8
-                %h5.mb-0= t('order.price_breakdown.labels.total_payment')
-              .col-4.text-end
-                %h5.fw-bold.text-primary= number_to_currency(@order.calculate_total_amount(current_cart))
-        .text-center.my-4.d-flex.justify-content-between
-          = link_to t('general.back'), users_cart_path
-          = f.submit t('order.actions.confirm_order'), class: 'btn btn-primary btn-lg px-5'
+          .row.py-2
+            .col-8
+              %span= t('order.price_breakdown.labels.item_total_without_tax')
+            .col-4.text-end
+              %span= number_to_currency(current_cart.total_price, unit: t('number.currency.tax_excluded_format.unit'))
+          .row.py-2
+            .col-8
+              %span= t('order.price_breakdown.labels.shipping_without_tax')
+            .col-4.text-end
+              %span= number_to_currency(@order.calculate_shipping_fee(current_cart), unit: t('number.currency.tax_excluded_format.unit'))
+          .row.py-2
+            .col-8
+              %span= t('order.price_breakdown.labels.cod_fee_without_tax')
+            .col-4.text-end
+              %span= number_to_currency(@order.calculate_cash_on_delivery_fee(current_cart.total_price_with_tax), unit: t('number.currency.tax_excluded_format.unit'))
+          .row.py-2
+            .col-8
+              %span= t('order.price_breakdown.labels.item_tax')
+            .col-4.text-end
+              %span= number_to_currency(current_cart.total_tax_amount, unit: t('number.currency.tax_excluded_format.unit'))
+          .row.py-2
+            .col-8
+              %span= t('order.price_breakdown.labels.service_fees_tax')
+            .col-4.text-end
+              %span= number_to_currency(@order.calculate_service_fees_tax(current_cart), unit: t('number.currency.tax_excluded_format.unit'))
+          .row.py-2.border-top.pt-3
+            .col-8
+              .fs-5.mb-0= t('order.price_breakdown.labels.total_payment')
+            .col-4.text-end
+              .fs-5.fw-bold.text-primary= number_to_currency(@order.calculate_total_amount(current_cart))
+      .text-center.my-4.d-flex.justify-content-between
+        = link_to t('general.back'), users_cart_path
+        = f.submit t('order.actions.confirm_order'), class: 'btn btn-primary btn-lg px-5'
