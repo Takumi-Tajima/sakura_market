@@ -77,38 +77,35 @@ class Order < ApplicationRecord
     (total_quantity / MAX_ITEMS_PER_BOX).ceil * SHIPPING_FEE_PER_BOX
   end
 
+  def item_total_amount_without_tax
+    order_items.sum(&:total_price)
+  end
+
+  def item_tax_amount
+    TaxRate.calculate_tax_amount(item_total_amount_without_tax, TaxRate.reduced)
+  end
+
+  def service_fees_tax_amount
+    tax_amount - item_tax_amount
+  end
+
+  def calculate_service_fees_tax(cart)
+    service_fees = calculate_shipping_fee(cart) + calculate_cash_on_delivery_fee(cart.total_price_with_tax)
+    TaxRate.calculate_tax_amount(service_fees)
+  end
+
+  def calculate_total_amount(cart)
+    service_fees = calculate_shipping_fee(cart) + calculate_cash_on_delivery_fee(cart.total_price_with_tax)
+    service_tax = TaxRate.calculate_tax_amount(service_fees)
+
+    cart.total_price_with_tax + service_fees + service_tax
+  end
+
   def self.available_delivery_dates
     (MIN_DELIVERY_DAY..MAX_DELIVERY_DAY).filter_map do |days|
       date = Date.current + days
       date if date.on_weekday?
     end
-  end
-
-  def item_total_without_tax
-    order_items.sum { |item| item.food.price * item.quantity }
-  end
-
-  def item_tax_amount
-    order_items.sum { |item|
-      tax_excluded_total = item.food.price * item.quantity
-      tax_included_total = item.price * item.quantity
-      tax_included_total - tax_excluded_total
-    }
-  end
-
-  def service_fees_tax_display_amount
-    tax_amount - item_tax_amount
-  end
-
-  def preview_service_fees_tax_amount(cart)
-    TaxRate.calculate_tax_amount(calculate_shipping_fee(cart) + calculate_cash_on_delivery_fee(cart.total_price_with_tax))
-  end
-
-  def preview_total_amount(cart)
-    cart.total_price_with_tax + 
-    calculate_shipping_fee(cart) + 
-    calculate_cash_on_delivery_fee(cart.total_price_with_tax) + 
-    preview_service_fees_tax_amount(cart).floor
   end
 
   private

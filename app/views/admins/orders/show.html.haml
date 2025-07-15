@@ -81,7 +81,7 @@
             .col-8
               %span= t('order.price_breakdown.labels.item_total_without_tax')
             .col-4.text-end
-              %span= number_to_currency(@order.item_total_without_tax, unit: t('number.currency.tax_excluded_format.unit'))
+              %span= number_to_currency(@order.item_total_amount_without_tax, unit: t('number.currency.tax_excluded_format.unit'))
           .row.py-2
             .col-8
               %span= t('order.price_breakdown.labels.shipping_without_tax')
@@ -101,7 +101,7 @@
             .col-8
               %span= t('order.price_breakdown.labels.service_fees_tax')
             .col-4.text-end
-              %span= number_to_currency(@order.service_fees_tax_display_amount, unit: t('number.currency.tax_excluded_format.unit'))
+              %span= number_to_currency(@order.service_fees_tax_amount, unit: t('number.currency.tax_excluded_format.unit'))
           .row.py-2.border-top.pt-3
             .col-8
               %h5.mb-0= t('order.price_breakdown.labels.total_payment')

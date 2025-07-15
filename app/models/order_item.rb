@@ -7,6 +7,14 @@ class OrderItem < ApplicationRecord
   validates :price, numericality: { greater_than: 0 }
   validate :validate_food_is_published
 
+  def total_price
+    quantity * food.price
+  end
+
+  def total_price_with_tax
+    quantity * price
+  end
+
   private
 
   def validate_food_is_published

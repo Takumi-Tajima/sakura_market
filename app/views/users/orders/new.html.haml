@@ -80,12 +80,12 @@
               .col-8
                 %span= t('order.price_breakdown.labels.service_fees_tax')
               .col-4.text-end
-                %span= number_to_currency(@order.preview_service_fees_tax_amount(current_cart), unit: t('number.currency.tax_excluded_format.unit'))
+                %span= number_to_currency(@order.calculate_service_fees_tax(current_cart), unit: t('number.currency.tax_excluded_format.unit'))
             .row.py-2.border-top.pt-3
               .col-8
                 %h5.mb-0= t('order.price_breakdown.labels.total_payment')
               .col-4.text-end
-                %h5.fw-bold.text-primary= number_to_currency(@order.preview_total_amount(current_cart))
+                %h5.fw-bold.text-primary= number_to_currency(@order.calculate_total_amount(current_cart))
         .text-center.my-4.d-flex.justify-content-between
           = link_to t('general.back'), users_cart_path
           = f.submit t('order.actions.confirm_order'), class: 'btn btn-primary btn-lg px-5'
