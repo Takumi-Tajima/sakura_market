@@ -1,109 +1,108 @@
-.mt-3
-  .row
-    .col-12
-      .d-flex.justify-content-between.align-items-center.mb-4
-        %h1.fs-2 注文詳細 ##{@order.id}
+.row
+  .col-12
+    .d-flex.justify-content-between.align-items-center.mb-4
+      %h1.fs-2 注文詳細 ##{@order.id}
 
-      .card.mb-4
-        .card-header
-          .fs-5.mb-0= t('order.users_info')
-        .card-body
-          .row.mb-2
-            .col-3
-              %p.mb-0= User.human_attribute_name(:name)
-            .col-9
-              %p.fw-bold= @order.user.name
-          .row.mb-2
-            .col-3
-              %p.mb-0= User.human_attribute_name(:email)
-            .col-9
-              %p.fw-bold= @order.user.email
-          .row
-            .col-3
-              %p.mb-0= User.human_attribute_name(:address)
-            .col-9
-              %p.fw-bold= @order.user.address
+    .card.mb-4
+      .card-header
+        .fs-5.mb-0= t('order.users_info')
+      .card-body
+        .row.mb-2
+          .col-3
+            %p.mb-0= User.human_attribute_name(:name)
+          .col-9
+            %p.fw-bold= @order.user.name
+        .row.mb-2
+          .col-3
+            %p.mb-0= User.human_attribute_name(:email)
+          .col-9
+            %p.fw-bold= @order.user.email
+        .row
+          .col-3
+            %p.mb-0= User.human_attribute_name(:address)
+          .col-9
+            %p.fw-bold= @order.user.address
 
-      .card.mb-4
-        .card-header
-          .fs-5= t('order.delivery_details')
-        .card-body
-          .row.mb-2
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:ordered_at)
-            .col-9
-              %p.fw-bold= l(@order.ordered_at, format: :long)
-          .row.mb-2
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:delivery_on)
-            .col-9
-              %p.fw-bold= l(@order.delivery_on)
-          .row.mb-2
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:delivery_time_slot)
-            .col-9
-              %p.fw-bold= @order.delivery_time_slot
-          .row.mb-2
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:delivery_name)
-            .col-9
-              %p.fw-bold= @order.delivery_name
-          .row
-            .col-3
-              %p.mb-0= Order.human_attribute_name(:delivery_address)
-            .col-9
-              %p.fw-bold= @order.delivery_address
+    .card.mb-4
+      .card-header
+        .fs-5= t('order.delivery_details')
+      .card-body
+        .row.mb-2
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:ordered_at)
+          .col-9
+            %p.fw-bold= l(@order.ordered_at, format: :long)
+        .row.mb-2
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:delivery_on)
+          .col-9
+            %p.fw-bold= l(@order.delivery_on)
+        .row.mb-2
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:delivery_time_slot)
+          .col-9
+            %p.fw-bold= @order.delivery_time_slot
+        .row.mb-2
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:delivery_name)
+          .col-9
+            %p.fw-bold= @order.delivery_name
+        .row
+          .col-3
+            %p.mb-0= Order.human_attribute_name(:delivery_address)
+          .col-9
+            %p.fw-bold= @order.delivery_address
 
-      .card.mb-4
-        .card-header
-          .fs-5= Order.human_attribute_name(:order_items)
-        .card-body
-          %table.table
-            %thead
+    .card.mb-4
+      .card-header
+        .fs-5= Order.human_attribute_name(:order_items)
+      .card-body
+        %table.table
+          %thead
+            %tr
+              %th= Food.human_attribute_name(:name)
+              %th= CartItem.human_attribute_name(:quantity)
+              %th= Food.human_attribute_name(:price)
+              %th= t('cart_item.subtotal')
+          %tbody
+            - @order.order_items.includes(:food).each do |item|
               %tr
-                %th= Food.human_attribute_name(:name)
-                %th= CartItem.human_attribute_name(:quantity)
-                %th= Food.human_attribute_name(:price)
-                %th= t('cart_item.subtotal')
-            %tbody
-              - @order.order_items.includes(:food).each do |item|
-                %tr
-                  %td= item.food.name
-                  %td= item.quantity
-                  %td= number_to_currency(item.price)
-                  %td= number_to_currency(item.price * item.quantity)
+                %td= item.food.name
+                %td= item.quantity
+                %td= number_to_currency(item.price)
+                %td= number_to_currency(item.price * item.quantity)
 
-      .card.mb-4
-        .card-header
-          .fs-5= t('order.price_breakdown.title')
-        .card-body
-          .row.py-2
-            .col-8
-              %span= t('order.price_breakdown.labels.item_total_without_tax')
-            .col-4.text-end
-              %span= number_to_currency(@order.item_total_without_tax, unit: t('number.currency.tax_excluded_format.unit'))
-          .row.py-2
-            .col-8
-              %span= t('order.price_breakdown.labels.shipping_without_tax')
-            .col-4.text-end
-              %span= number_to_currency(@order.shipping_fee, unit: t('number.currency.tax_excluded_format.unit'))
-          .row.py-2
-            .col-8
-              %span= t('order.price_breakdown.labels.cod_fee_without_tax')
-            .col-4.text-end
-              %span= number_to_currency(@order.cash_on_delivery_fee, unit: t('number.currency.tax_excluded_format.unit'))
-          .row.py-2
-            .col-8
-              %span= t('order.price_breakdown.labels.item_tax')
-            .col-4.text-end
-              %span= number_to_currency(@order.item_tax_amount, unit: t('number.currency.tax_excluded_format.unit'))
-          .row.py-2
-            .col-8
-              %span= t('order.price_breakdown.labels.service_fees_tax')
-            .col-4.text-end
-              %span= number_to_currency(@order.service_fees_tax_display_amount, unit: t('number.currency.tax_excluded_format.unit'))
-          .row.py-2.border-top.pt-3
-            .col-8
-              %h5.mb-0= t('order.price_breakdown.labels.total_payment')
-            .col-4.text-end
-              %h5.fw-bold.text-primary= number_to_currency(@order.total_amount)
+    .card.mb-4
+      .card-header
+        .fs-5= t('order.price_breakdown.title')
+      .card-body
+        .row.py-2
+          .col-8
+            %span= t('order.price_breakdown.labels.item_total_without_tax')
+          .col-4.text-end
+            %span= number_to_currency(@order.item_total_amount_without_tax, unit: t('number.currency.tax_excluded_format.unit'))
+        .row.py-2
+          .col-8
+            %span= t('order.price_breakdown.labels.shipping_without_tax')
+          .col-4.text-end
+            %span= number_to_currency(@order.shipping_fee, unit: t('number.currency.tax_excluded_format.unit'))
+        .row.py-2
+          .col-8
+            %span= t('order.price_breakdown.labels.cod_fee_without_tax')
+          .col-4.text-end
+            %span= number_to_currency(@order.cash_on_delivery_fee, unit: t('number.currency.tax_excluded_format.unit'))
+        .row.py-2
+          .col-8
+            %span= t('order.price_breakdown.labels.item_tax')
+          .col-4.text-end
+            %span= number_to_currency(@order.item_tax_amount, unit: t('number.currency.tax_excluded_format.unit'))
+        .row.py-2
+          .col-8
+            %span= t('order.price_breakdown.labels.service_fees_tax')
+          .col-4.text-end
+            %span= number_to_currency(@order.service_fees_tax_amount, unit: t('number.currency.tax_excluded_format.unit'))
+        .row.py-2.border-top.pt-3
+          .col-8
+            .fs-5.mb-0= t('order.price_breakdown.labels.total_payment')
+          .col-4.text-end
+            .fs-5.fw-bold.text-primary= number_to_currency(@order.total_amount)

@@ -1,18 +1,17 @@
-.mt-3
-  .row
-    .col-6.mx-auto
-      .card.p-4
-        .row.mb-4
-          .col-4
-            = food_cover_tag(@food, :medium)
-          .col-8
-            .fs-5= @food.name
-            %p= @food.description
-            %p.fw-bold= number_to_currency(@food.price_with_tax)
+.row
+  .col-6.mx-auto
+    .card.p-4
+      .row.mb-4
+        .col-4
+          = food_cover_tag(@food, :medium)
+        .col-8
+          .fs-5= @food.name
+          %p= @food.description
+          %p.fw-bold= number_to_currency(@food.price_with_tax)
 
-        = simple_form_for @cart_item, url: users_cart_cart_items_path do |f|
-          = f.input :food_id, as: :hidden, input_html: { value: @food.id }
-          = f.input :quantity
-          = f.submit t('cart.add'), class: 'btn btn-primary'
+      = simple_form_for @cart_item, url: users_cart_cart_items_path do |f|
+        = f.input :food_id, as: :hidden, input_html: { value: @food.id }
+        = f.input :quantity
+        = f.submit t('cart.add'), class: 'btn btn-primary'
 
-      .mt-5= link_to t('general.back'), food_path(@food)
+    .mt-5= link_to t('general.back'), food_path(@food)
